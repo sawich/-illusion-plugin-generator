@@ -214,7 +214,7 @@ export class PackageBuilder {
 
   public async build() {
     {
-      const stream = await open("plugins.json", "w");
+      const stream = await open("../illusion-plugin-manager/public/plugins.json", "w");
       await stream.write(JSON.stringify(this.#plugins.flatMap((p) => p.build())));
     }
     {
