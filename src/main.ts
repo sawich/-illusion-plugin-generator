@@ -1,18 +1,19 @@
 import { PackageBuilder } from "./package-builder";
-import { BepInEx } from "./plugins/BepInEx";
+import { BepInEx, ConfigurationManager } from "./plugins/BepInEx";
 import { BetterHScenes } from "./plugins/BetterHScenes";
 import { Illusion_BrowserFolders } from "./plugins/Illusion_BrowserFolders";
-import { IllusionFixesBuilder } from "./plugins/IllusionFixes";
+import { IllusionFixesBuilder } from "./plugins/IllusionFixesBuilder";
 
-const pb = new PackageBuilder();
+const builder = new PackageBuilder();
 
-const bepInEx = BepInEx(pb);
+const bepInEx = BepInEx(builder);
+ConfigurationManager(builder, bepInEx);
 
-BetterHScenes(pb, bepInEx);
-Illusion_BrowserFolders(pb, bepInEx);
+BetterHScenes(builder, bepInEx);
+Illusion_BrowserFolders(builder, bepInEx);
 
-const ifb = new IllusionFixesBuilder(pb);
+const ifb = new IllusionFixesBuilder(builder);
 ifb.addDependence(bepInEx);
 ifb.build();
 
-pb.build();
+builder.build();

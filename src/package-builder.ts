@@ -69,6 +69,30 @@ export abstract class Identity {
 }
 
 export abstract class BasePlugin implements IBuildable {
+  public get id() {
+    return this.#id;
+  }
+
+  public get lang() {
+    return this.#lang;
+  }
+
+  public get place() {
+    return this.#place;
+  }
+
+  public get games() {
+    return this.#games;
+  }
+
+  public get resolver() {
+    return this.#resolver;
+  }
+
+  public get dependencies() {
+    return this.#dependencies;
+  }
+
   public addDependence(...plugins: BasePlugin[]) {
     this.#dependencies.push(...plugins);
   }
@@ -86,7 +110,12 @@ export abstract class BasePlugin implements IBuildable {
 
   public abstract build(): object;
 
-  protected constructor(lang: number, place: PluginPlaceType, games: PluginGameType[], resolver: PluginResolver) {
+  protected constructor(
+    lang: number,
+    place: PluginPlaceType,
+    games: PluginGameType[] | Set<PluginGameType>,
+    resolver: PluginResolver
+  ) {
     this.#lang = lang;
     this.#place = place;
     this.#games = new Set(games);
@@ -139,11 +168,7 @@ export class GitPartialPlugin extends Identity implements IBuildable {
     return this.#url;
   }
 
-  public addDependence(plugin: BasePlugin) {
-    this.#dependencies.push(plugin);
-  }
-
-  public addDependencies(...plugins: BasePlugin[]) {
+  public addDependence(...plugins: BasePlugin[]) {
     this.#dependencies.push(...plugins);
   }
 
@@ -178,7 +203,12 @@ export class GitPlugin extends BasePlugin {
     };
   }
 
-  public constructor(lang: number, games: PluginGameType[], resolver: PluginResolver, url: string) {
+  public constructor(
+    lang: number,
+    games: PluginGameType[] | Set<PluginGameType>,
+    resolver: PluginResolver,
+    url: string
+  ) {
     super(lang, PluginPlaceType.Git, games, resolver);
 
     this.#url = url;
@@ -229,7 +259,7 @@ export class PackageBuilder {
     return item;
   }
 
-  public addGit(lang: number, games: PluginGameType[], resolver: PluginResolver, url: string) {
+  public addGit(lang: number, games: PluginGameType[] | Set<PluginGameType>, resolver: PluginResolver, url: string) {
     const item = new GitPlugin(lang, games, resolver, url);
     this.#plugins.push(item);
     return item;
