@@ -1,18 +1,16 @@
-import {
-  PackageBuilder,
-  BasePlugin,
-  GitPartialPlugin,
-  GitPlugin,
-  PluginGameType,
-  PluginResolver,
-} from "./package-builder";
+import { PackageBuilder } from "./package-builder";
+import { GitPlugin } from "./package-builder/plugins/git-plugin";
+import { GitPartialPlugin } from "./package-builder/plugins/git-partial-plugin";
+import { Plugin } from "./package-builder/plugin";
+import { PluginResolver } from "./package-builder/plugin-resolver";
+import { PluginGameType } from "./package-builder/types/plugin-game-type";
 
 export abstract class PluginBuilder {
   protected get builder() {
     return this._builder;
   }
 
-  public abstract build(): void;
+  abstract build(): void;
 
   protected constructor(builder: PackageBuilder) {
     this._builder = builder;
@@ -26,24 +24,24 @@ export abstract class GitPartialPluginBuilder extends PluginBuilder {
     return this._plugin;
   }
 
-  public addDependence(plugin: BasePlugin) {
+  addDependence(plugin: Plugin) {
     this._plugin.addDependence(plugin);
   }
 
   protected constructor(builder: PackageBuilder, url: string) {
     super(builder);
-    this._plugin = builder.addGitPartial(url);
+    this._plugin = builder.addGitPartialPlugin(url);
   }
 
   private _plugin: GitPartialPlugin;
 }
 
 export abstract class GitPluginBuilder extends PluginBuilder {
-  public get plugin() {
+  get plugin() {
     return this._plugin;
   }
 
-  public addDependence(...plugin: BasePlugin[]) {
+  addDependence(...plugin: Plugin[]) {
     this._plugin.addDependence(...plugin);
   }
 
@@ -58,7 +56,7 @@ export abstract class GitPluginBuilder extends PluginBuilder {
     super(builder);
 
     const lang = builder.lang(name, description);
-    this._plugin = builder.addGit(lang, games, resolver, url);
+    this._plugin = builder.addGitPlugin(lang, games, resolver, url);
   }
 
   private _plugin: GitPlugin;

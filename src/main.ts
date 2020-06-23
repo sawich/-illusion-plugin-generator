@@ -1,4 +1,4 @@
-import { PackageBuilder } from "./package-builder";
+import { PackageBuilder } from "./core/package-builder";
 import { BepInEx, ConfigurationManager } from "./plugins/BepInEx";
 import { BetterHScenes } from "./plugins/BetterHScenes";
 import { Illusion_BrowserFolders } from "./plugins/Illusion_BrowserFolders";

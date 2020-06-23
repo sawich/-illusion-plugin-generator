@@ -1,9 +1,11 @@
-import { PackageBuilder, PluginGameType, PluginResolver } from "../package-builder";
+import { PackageBuilder } from "../core/package-builder";
+import { PluginResolver } from "../core/package-builder/plugin-resolver";
+import { PluginGameType } from "../core/package-builder/types/plugin-game-type";
 
-import { GitPartialPluginBuilder } from "../plugin-builder";
+import { GitPartialPluginBuilder } from "../core/plugin-builder";
 
 export class IllusionFixesBuilder extends GitPartialPluginBuilder {
-  public build() {
+  build() {
     this.addCameraTarget();
     this.addCardImport();
     this.addCharacterListOptimizations();
@@ -29,7 +31,7 @@ export class IllusionFixesBuilder extends GitPartialPluginBuilder {
     this.addUnlimitedMapLights();
   }
 
-  public constructor(builder: PackageBuilder) {
+  constructor(builder: PackageBuilder) {
     super(builder, "https://github.com/IllusionMods/IllusionFixes");
   }
 

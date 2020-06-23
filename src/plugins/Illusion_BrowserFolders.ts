@@ -1,7 +1,10 @@
-import { PackageBuilder, GitPlugin, PluginGameType, PluginResolver } from "../package-builder";
+import { PackageBuilder } from "../core/package-builder";
+import { GitPlugin } from "../core/package-builder/plugins/git-plugin";
+import { PluginResolver } from "../core/package-builder/plugin-resolver";
+import { PluginGameType } from "../core/package-builder/types/plugin-game-type";
 
 export const Illusion_BrowserFolders = (pb: PackageBuilder, bepInEx: GitPlugin) => {
-  const git = pb.addGitPartial("https://github.com/ManlyMarco/Illusion_BrowserFolders");
+  const git = pb.addGitPartialPlugin("https://github.com/ManlyMarco/Illusion_BrowserFolders");
   git.addDependence(bepInEx);
 
   const lang = pb.lang("BrowserFolders", "Maker and Studio File Browser Folders for games by Illusion");
