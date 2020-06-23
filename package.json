@@ -1,0 +1,17 @@
+{
+  "name": "angel-package-generator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dst/main.js",
+  "scripts": {
+    "b": "node dist/main.js",
+    "c": "tsc",
+    "w": "tsc --watch"
+  },
+  "author": "sawich <sawich@angeldev.org>",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^14.0.13",
+    "typescript": "^3.9.5"
+  }
+}
