@@ -1,49 +1,82 @@
-import { GitPartialPlugin } from "./plugins/git-partial-plugin";
-import { PluginGameType } from "./types/plugin-game-type";
-import { PluginResolver } from "./plugin-resolver";
-import { GitPlugin } from "./plugins/git-plugin";
-import { IBuildable } from "./types/buildable";
-import { GitTool } from "./tools/git-tool";
-import { open } from "fs/promises";
-import { Unique } from "./unique";
-import { Lang } from "./lang";
+import { Container, IContainer } from "./container";
+import { open, writeFile, unlink, readdir } from "fs/promises";
+import { Lang, ILang } from "./lang";
+import { resolve } from "path";
+
+interface IGrouped {
+  [key: number]: string[];
+}
 
 export class PackageBuilder {
-  lang(name: string, description: string) {
-    this.#langs.push(new Lang(name, description));
-    return this.#lang.next().value as number;
+  lang(lang: ILang) {
+    const entity = new Lang(lang);
+    this.#langs.push(entity);
+    return entity;
+  }
+
+  addPlugin(container: IContainer) {
+    this.#plugins.push(new Container(container));
   }
 
   async build() {
-    {
-      const stream = await open("../illusion-plugin-manager/public/packages.json", "w");
-      await stream.write(JSON.stringify(this.#plugins.flatMap((p) => p.build())));
+    await this.removeFiles(resolve(this.#apiWorkDir, "packages"));
+    await this.saveLists();
+
+    await this.removeFiles(resolve(this.#apiWorkDir, "scripts"));
+    await this.savePlugins();
+
+    await this.saveLangs();
+  }
+
+  private async removeFiles(path: string) {
+    const files = await readdir(path);
+    for (const file of files) {
+      await unlink(resolve(path, file));
     }
-    {
-      const stream = await open("lang.json", "w");
-      await stream.write(JSON.stringify(this.#langs.map((l) => ({ name: l.name, description: l.description }))));
+  }
+
+  private async savePlugins() {
+    for (const plugin of this.#plugins) {
+      const builded = plugin.build();
+
+      const path = resolve(this.#apiWorkDir, "scripts", `${builded.uuid}.json`);
+      writeFile(path, JSON.stringify(builded), "utf-8");
     }
   }
 
-  addGitPartialPlugin(url: string) {
-    const item = new GitPartialPlugin(url);
-    this.#plugins.push(item);
-    return item;
+  public async saveLists() {
+    const groups = this.#plugins.reduce<IGrouped>((prev, curr) => {
+      for (const game of curr.games) {
+        (prev[game] = prev[game] || []).push(curr.uuid);
+      }
+      return prev;
+    }, {});
+
+    for (const game in groups) {
+      const group = groups[game];
+      writeFile(resolve(this.#apiWorkDir, "packages", `${game}.json`), JSON.stringify(group));
+    }
   }
 
-  addGitPlugin(lang: number, games: PluginGameType[] | Set<PluginGameType>, resolver: PluginResolver, url: string) {
-    const item = new GitPlugin(lang, games, resolver, url);
-    this.#plugins.push(item);
-    return item;
-  }
-
-  addGitTool(lang: number, resolver: PluginResolver, url: string) {
-    const item = new GitTool(lang, resolver, url);
-    this.#plugins.push(item);
-    return item;
+  private async saveLangs() {
+    const stream = await open("lang.json", "w");
+    await stream.write(
+      JSON.stringify(
+        Object.fromEntries(
+          this.#langs.map((lang) => [
+            lang.uuid,
+            {
+              name: lang.name,
+              description: lang.description,
+            },
+          ])
+        )
+      )
+    );
   }
 
   #langs: Lang[] = [];
-  #lang = Unique.idGenerator();
-  #plugins: IBuildable[] = [];
+  #plugins: Container[] = [];
+
+  #apiWorkDir = "../illusion-plugin-fake-api/public";
 }

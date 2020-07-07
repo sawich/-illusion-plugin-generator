@@ -1,14 +1,19 @@
-import { PackageBuilder } from "../core/package-builder";
-import { GitPlugin } from "../core/package-builder/plugins/git-plugin";
-import { PluginResolver } from "../core/package-builder/plugin-resolver";
-import { PluginGameType } from "../core/package-builder/types/plugin-game-type";
+// import { VSPartialResolve } from "../core/package-builder/resolvers/vs-partial-resolver";
+// import { AResolve } from "../core/package-builder/resolvers/vs-resolver";
+// import { GitPlace } from "../core/package-builder/places/git-placer";
+// import { Game } from "../core/package-builder/types/game";
+// import { PackageBuilder } from "../core/package-builder";
 
-export const Illusion_BrowserFolders = (pb: PackageBuilder, bepInEx: GitPlugin) => {
-  const git = pb.addGitPartialPlugin("https://github.com/ManlyMarco/Illusion_BrowserFolders");
-  git.addDependence(bepInEx);
+// export const Illusion_BrowserFolders = (builder: PackageBuilder, plugin: AResolve) => {
+//   const lang = builder.lang("BrowserFolders", "Maker and Studio File Browser Folders for games by Illusion");
 
-  const lang = pb.lang("BrowserFolders", "Maker and Studio File Browser Folders for games by Illusion");
-  git.addProject(lang, [PluginGameType.AI], PluginResolver.VSCSP, "AI_BrowserFolders");
-  git.addProject(lang, [PluginGameType.HS2], PluginResolver.VSCSP, "HS2_BrowserFolders");
-  git.addProject(lang, [PluginGameType.KK], PluginResolver.VSCSP, "KK_FolderBrowser");
-};
+//   const resolver = new VSPartialResolve(plugin);
+//   resolver.addResolve({ files: [], lang, games: [Game.AI], folder: "AI_BrowserFolders" });
+//   resolver.addResolve({ files: [], lang, games: [Game.HS2], folder: "HS2_BrowserFolders" });
+//   resolver.addResolve({ files: [], lang, games: [Game.KK], folder: "KK_FolderBrowser" });
+
+//   builder.addPlugin({
+//     placer: new GitPlace({ url: "https://github.com/ManlyMarco/Illusion_BrowserFolders" }),
+//     resolver,
+//   });
+// };

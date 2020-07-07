@@ -1,27 +1,33 @@
-import { PluginPlaceType } from "../types/plugin-place-type";
-import { PluginGameType } from "../types/plugin-game-type";
-import { PluginResolver } from "../plugin-resolver";
-import { Plugin } from "../plugin";
-import { GitPartialPlugin } from "./git-partial-plugin";
+// import { Game } from "../types/game";
+// import { Resolve } from "../types/resolver";
+// import { IBuildable } from "../types/buildable";
 
-export class ProjectGitPartialPlugin extends Plugin {
-  build() {
-    return { ...super.header, identity: this.#parent.identity, url: this.#parent.url, folder: this.#folder };
-  }
+// export class ProjectGitPartialPlugin implements IEntity, IBuildable {
+//   addDependence(...entities: IEntity[]) {
+//     this.#dependencies.push(...entities);
+//   }
 
-  constructor(
-    lang: number,
-    games: PluginGameType[],
-    resolver: PluginResolver,
-    folder: string,
-    parent: GitPartialPlugin
-  ) {
-    super(lang, PluginPlaceType.Git, games, resolver);
+//   get entity() {
+//     return this.#entity;
+//   }
 
-    this.#folder = folder;
-    this.#parent = parent;
-  }
+//   build() {
+//     return {
+//       ...this.#entity.build(),
+//       dependencies: this.#dependencies.map((d) => d.entity.id),
+//       games: Array.from(this.#games),
+//       folder: this.#folder,
+//     };
+//   }
 
-  #folder: string;
-  #parent: GitPartialPlugin;
-}
+//   constructor(entity: { lang: number; resolver: Resolve }, plugin: { games: Game[]; folder: string }) {
+//     this.#entity = new Entity({ lang: entity.lang, resolver: entity.resolver });
+//     this.#folder = plugin.folder;
+//     this.#games = new Set(plugin.games);
+//   }
+
+//   #entity: Entity;
+//   #dependencies: IEntity[] = [];
+//   #games: Set<Game>;
+//   #folder: string;
+// }
