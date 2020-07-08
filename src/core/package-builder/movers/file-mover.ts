@@ -2,10 +2,12 @@ import { IBuildable } from "../types/buildable";
 import { Mover } from "../types/mover";
 import { Node } from "../types/node";
 
-export interface IFiles {
+export interface IFile {
   src: string;
   dst: string;
 }
+
+type IFiles = IFile[];
 
 export class FileMover implements IBuildable {
   build() {
@@ -18,9 +20,9 @@ export class FileMover implements IBuildable {
     };
   }
 
-  constructor(entity: { files: IFiles[] }) {
+  constructor(entity: { files: IFiles }) {
     this.#files = entity.files;
   }
 
-  #files: IFiles[];
+  #files: IFiles;
 }
