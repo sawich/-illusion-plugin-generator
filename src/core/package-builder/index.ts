@@ -4,7 +4,10 @@ import { Lang, ILang } from "./lang";
 import { resolve } from "path";
 
 interface IGrouped {
-  [key: number]: string[];
+  [key: number]: {
+    uuid: string;
+    lang: string;
+  }[];
 }
 
 export class PackageBuilder {
@@ -47,7 +50,10 @@ export class PackageBuilder {
   public async saveLists() {
     const groups = this.#plugins.reduce<IGrouped>((prev, curr) => {
       for (const game of curr.games) {
-        (prev[game] = prev[game] || []).push(curr.uuid);
+        (prev[game] = prev[game] || []).push({
+          uuid: curr.uuid,
+          lang: curr.lang.uuid,
+        });
       }
       return prev;
     }, {});

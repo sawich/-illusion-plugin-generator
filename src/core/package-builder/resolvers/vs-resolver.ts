@@ -1,10 +1,6 @@
 import { IBuildable } from "../types/buildable";
 import { Resolver } from "../types/resolver";
-
-export interface IVSFiles {
-  src: string;
-  dst: string;
-}
+import { Node } from "../types/node";
 
 export class VSProjectResolver implements IBuildable {
   build(): object {
@@ -21,17 +17,17 @@ export class VSProjectResolver implements IBuildable {
 export class VSResolver implements IBuildable {
   build() {
     return {
-      type: Resolver.VisualStudio,
-      files: this.#files,
-      build: this.#build.map((b) => b.build()),
+      type: Node.Resolver,
+      node: {
+        type: Resolver.VisualStudio,
+        build: this.#build.map((b) => b.build()),
+      },
     };
   }
 
-  constructor(entity: { files: IVSFiles[]; build: IBuildable[] }) {
+  constructor(entity: { build: IBuildable[] }) {
     this.#build = entity.build;
-    this.#files = entity.files;
   }
 
   #build: IBuildable[];
-  #files: IVSFiles[];
 }

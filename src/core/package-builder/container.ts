@@ -6,8 +6,8 @@ export interface IContainer {
   games: Game[];
   lang: Lang;
   uuid: string;
-  placer: IBuildable;
-  resolver: IBuildable;
+  uuidentity: string;
+  nodes: IBuildable[];
   deps: string[];
 }
 
@@ -16,33 +16,42 @@ export class Container implements IBuildable {
     return this.#uuid;
   }
 
+  get uuidentity() {
+    return this.#uuidentity;
+  }
+
+  get lang() {
+    return this.#lang;
+  }
+
   get games() {
     return this.#games;
   }
 
   build() {
     return {
-      // game: this.#games,
       uuid: this.#uuid,
-      lang: this.#lang.uuid,
-      placer: this.#placer.build(),
-      resolver: this.#resolver.build(),
+      uuidentity: this.#uuidentity,
+      nodes: this.#nodes.map((b) => b.build()),
+      dependence: this.#dependence,
     };
   }
 
   constructor(container: IContainer) {
     this.#games = container.games;
-    this.#uuid = container.uuid;
     this.#lang = container.lang;
-    this.#placer = container.placer;
-    this.#resolver = container.resolver;
+    this.#uuid = container.uuid;
+    this.#uuidentity = container.uuidentity;
+    this.#nodes = container.nodes;
+    this.#dependence = container.deps;
   }
 
   #games: Game[];
-  #uuid: string;
   #lang: Lang;
-  #placer: IBuildable;
-  #resolver: IBuildable;
+  #uuid: string;
+  #uuidentity: string;
+  #nodes: IBuildable[];
+  #dependence: string[];
 }
 
 // https://youtu.be/Y7eMV0hg9Iw
