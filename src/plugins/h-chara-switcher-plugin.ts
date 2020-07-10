@@ -10,7 +10,7 @@ class HCharaSwitcherPlugin {
   constructor(builder: PackageBuilder) {
     this.#builder = builder;
     this.#lang = builder.lang({
-      uuid: this.#uuid,
+      uuid: "1b4bb2d6-87e2-45fa-aee7-a27bba9f5342",
       name: "HCharaSwitcher",
       desc: "This plugin allows you to change character cards during H scene",
     });
@@ -39,12 +39,16 @@ class HCharaSwitcherPlugin {
     });
 
     const info: IContainer = {
-      games: [Game.HS2],
+      games: [
+        {
+          id: Game.HS2,
+          uuid: "f72d5253-c424-4910-8d5f-7ad96a34710d",
+          deps: ["83f46fb9-a52d-45a4-8823-3858d3e4c605", "78402dca-9897-4e76-ae02-ee349a511110"],
+        },
+      ],
       lang: this.#lang,
-      uuid: this.#uuid,
-      uuidentity: this.#uuid,
+      uuidentity: this.#uuidentity,
       nodes: [placer, resolver, mover],
-      deps: ["2f94706f-97e3-4274-8ed1-53fbd1c82498", "31388055-2886-40f7-9b43-c6ae146875da"],
     };
 
     this.#builder.addPlugin(info);
@@ -53,7 +57,7 @@ class HCharaSwitcherPlugin {
   #lang: Lang;
   #builder: PackageBuilder;
 
-  #uuid = "4b11249a-f9a8-46d0-b372-748eb61091fe";
+  #uuidentity = "4b11249a-f9a8-46d0-b372-748eb61091fe";
 }
 
 export const HCharaSwitcherPluginAdd = (builder: PackageBuilder) => {

@@ -2,20 +2,22 @@ import { Lang } from "./lang";
 import { IBuildable } from "./types/buildable";
 import { Game } from "./types/game";
 
-export interface IContainer {
-  games: Game[];
-  lang: Lang;
+export interface IGame {
+  id: Game;
   uuid: string;
-  uuidentity: string;
-  nodes: IBuildable[];
   deps: string[];
 }
 
-export class Container implements IBuildable {
-  get uuid() {
-    return this.#uuid;
-  }
+type IGames = IGame[];
 
+export interface IContainer {
+  games: IGames;
+  lang: Lang;
+  uuidentity: string;
+  nodes: IBuildable[];
+}
+
+export class Container {
   get uuidentity() {
     return this.#uuidentity;
   }
@@ -28,30 +30,29 @@ export class Container implements IBuildable {
     return this.#games;
   }
 
-  build() {
+  build(game: Game) {
+    const found = this.#games.find((g) => g.id == game);
+    if (found === undefined) {
+      throw new Error("");
+    }
+
     return {
-      // uuid: this.#uuid,
-      // uuidentity: this.#uuidentity,
       nodes: this.#nodes.map((b) => b.build()),
-      dependence: this.#dependence,
+      dependence: found.deps,
     };
   }
 
   constructor(container: IContainer) {
     this.#games = container.games;
     this.#lang = container.lang;
-    this.#uuid = container.uuid;
     this.#uuidentity = container.uuidentity;
     this.#nodes = container.nodes;
-    this.#dependence = container.deps;
   }
 
-  #games: Game[];
+  #games: IGames;
   #lang: Lang;
-  #uuid: string;
   #uuidentity: string;
   #nodes: IBuildable[];
-  #dependence: string[];
 }
 
 // https://youtu.be/Y7eMV0hg9Iw

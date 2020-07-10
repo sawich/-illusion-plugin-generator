@@ -10,7 +10,7 @@ class BetterHScenesPlugin {
   constructor(builder: PackageBuilder) {
     this.#builder = builder;
     this.#lang = builder.lang({
-      uuid: this.#langUuid,
+      uuid: "1885f293-ed59-4ec2-8746-14625a9c2ab3",
       name: "BetterHScenes",
       desc: "This plugin fixes HScene performance bugs and adds extra features",
     });
@@ -44,12 +44,10 @@ class BetterHScenesPlugin {
     });
 
     const info: IContainer = {
-      games: [Game.HS2],
+      games: [{ id: Game.HS2, uuid: "4bc31922-a273-4cbb-b0b2-5cb565e58790", deps: [] }],
       lang: this.#lang,
-      uuid: this.#hs2Uuid,
       uuidentity: this.#uuidentity,
       nodes: [placer, resolver, mover],
-      deps: [],
     };
 
     this.#builder.addPlugin(info);
@@ -78,12 +76,10 @@ class BetterHScenesPlugin {
     });
 
     const info: IContainer = {
-      games: [Game.AI],
+      games: [{ id: Game.AI, uuid: "504f6621-0861-4f2f-bf8d-f8ad3d6c3558", deps: [] }],
       lang: this.#lang,
-      uuid: this.#aiUuid,
       uuidentity: this.#uuidentity,
       nodes: [placer, resolver, mover],
-      deps: [],
     };
 
     this.#builder.addPlugin(info);
@@ -91,11 +87,6 @@ class BetterHScenesPlugin {
 
   #lang: Lang;
   #builder: PackageBuilder;
-
-  #langUuid = "1885f293-ed59-4ec2-8746-14625a9c2ab3";
-
-  #hs2Uuid = "4bc31922-a273-4cbb-b0b2-5cb565e58790";
-  #aiUuid = "504f6621-0861-4f2f-bf8d-f8ad3d6c3558";
 
   #uuidentity = "22b08948-99f4-4ef0-86a5-b20506c1ca61";
 }

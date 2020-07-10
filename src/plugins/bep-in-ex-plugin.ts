@@ -9,7 +9,7 @@ import { Game } from "../core/package-builder/types/game";
 class BepInExPlugin {
   constructor(builder: PackageBuilder) {
     this.#builder = builder;
-    this.#lang = builder.lang({ uuid: this.#uuid, name: "BepInEx", desc: "Bepis Injector Extensible" });
+    this.#lang = builder.lang({ uuid: this.#uuidLang, name: "BepInEx", desc: "Bepis Injector Extensible" });
   }
 
   Use() {
@@ -51,12 +51,16 @@ class BepInExPlugin {
     });
 
     const info: IContainer = {
-      games: [Game.PH, Game.HS1, Game.KK, Game.AI, Game.HS2],
+      games: [
+        { id: Game.PH, uuid: "0dd5a5bc-5bec-4706-8ea6-30f1e029016f", deps: [] },
+        { id: Game.HS1, uuid: "17a9f3ce-b426-4357-ba70-b0d882754c24", deps: [] },
+        { id: Game.KK, uuid: "07259b2c-efb9-479d-a9e7-46f0c6c4dceb", deps: [] },
+        { id: Game.AI, uuid: "6665aecd-9eef-4856-b941-4bc397d80eff", deps: [] },
+        { id: Game.HS2, uuid: "83f46fb9-a52d-45a4-8823-3858d3e4c605", deps: [] },
+      ],
       lang: this.#lang,
-      uuid: this.#uuid,
-      uuidentity: this.#uuid,
+      uuidentity: this.#uuidentity,
       nodes: [placer, resolver, mover],
-      deps: [],
     };
 
     this.#builder.addPlugin(info);
@@ -64,15 +68,15 @@ class BepInExPlugin {
 
   #lang: Lang;
   #builder: PackageBuilder;
-
-  #uuid = "2f94706f-97e3-4274-8ed1-53fbd1c82498";
+  #uuidLang = "e30cfeba-c751-4dbb-a350-1209acd960e1";
+  #uuidentity = "2f94706f-97e3-4274-8ed1-53fbd1c82498";
 }
 
 export class ConfigurationManagerPlugin {
   constructor(builder: PackageBuilder) {
     this.#builder = builder;
     this.#lang = builder.lang({
-      uuid: this.#uuid,
+      uuid: this.#uuidLang,
       name: "BepInEx.ConfigurationManager",
       desc: "Mod configuration manager for BepInEx 5",
     });
@@ -110,12 +114,16 @@ export class ConfigurationManagerPlugin {
     });
 
     const info: IContainer = {
-      games: [Game.PH, Game.HS1, Game.KK, Game.AI, Game.HS2],
+      games: [
+        { id: Game.PH, uuid: "852e2807-85d6-4826-ac90-0f62910c63f5", deps: ["0dd5a5bc-5bec-4706-8ea6-30f1e029016f"] },
+        { id: Game.HS1, uuid: "7427d5a7-1ff8-41d1-8d7d-fe57eaee7998", deps: ["17a9f3ce-b426-4357-ba70-b0d882754c24"] },
+        { id: Game.KK, uuid: "a0088b70-3f30-4fae-87b9-1cd0eba71333", deps: ["07259b2c-efb9-479d-a9e7-46f0c6c4dceb"] },
+        { id: Game.AI, uuid: "2fa9504d-5ed5-4cbf-b12f-dc61467ecb91", deps: ["6665aecd-9eef-4856-b941-4bc397d80eff"] },
+        { id: Game.HS2, uuid: "78402dca-9897-4e76-ae02-ee349a511110", deps: ["83f46fb9-a52d-45a4-8823-3858d3e4c605"] },
+      ],
       lang: this.#lang,
-      uuid: this.#uuid,
-      uuidentity: this.#uuid,
+      uuidentity: this.#uuidentity,
       nodes: [placer, resolver, mover],
-      deps: ["2f94706f-97e3-4274-8ed1-53fbd1c82498"],
     };
 
     this.#builder.addPlugin(info);
@@ -124,7 +132,8 @@ export class ConfigurationManagerPlugin {
   #lang: Lang;
   #builder: PackageBuilder;
 
-  #uuid = "31388055-2886-40f7-9b43-c6ae146875da";
+  #uuidLang = "c3db40bf-d97d-4cd4-859c-9dd453f5e789";
+  #uuidentity = "31388055-2886-40f7-9b43-c6ae146875da";
 }
 
 export const ConfigurationManagerPluginAdd = (builder: PackageBuilder) => {

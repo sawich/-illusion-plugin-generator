@@ -20,7 +20,7 @@ export class PackageBuilder {
   }
 
   addPlugin(container: IContainer) {
-    this.#plugins.push(new Container(container));
+    this.#packages.push(new Container(container));
   }
 
   async build() {
@@ -41,19 +41,20 @@ export class PackageBuilder {
   }
 
   private async savePlugins() {
-    for (const plugin of this.#plugins) {
-      const builded = plugin.build();
-
-      const path = resolve(this.#apiWorkDir, "scripts", `${plugin.uuid}.json`);
-      writeFile(path, JSON.stringify(builded), "utf-8");
+    for (const p of this.#packages) {
+      for (const game of p.games) {
+        const builded = p.build(game.id);
+        const path = resolve(this.#apiWorkDir, "scripts", `${game.uuid}.json`);
+        writeFile(path, JSON.stringify(builded), "utf-8");
+      }
     }
   }
 
   public async saveLists() {
-    const groups = this.#plugins.reduce<IGrouped>((prev, curr) => {
+    const groups = this.#packages.reduce<IGrouped>((prev, curr) => {
       for (const game of curr.games) {
-        (prev[game] = prev[game] || []).push({
-          uuid: curr.uuid,
+        (prev[game.id] = prev[game.id] || []).push({
+          uuid: game.uuid,
           lang: curr.lang.uuid,
           uuidentity: curr.uuidentity,
         });
@@ -85,7 +86,7 @@ export class PackageBuilder {
   }
 
   #langs: Lang[] = [];
-  #plugins: Container[] = [];
+  #packages: Container[] = [];
 
   #apiWorkDir = "../illusion-plugin-fake-api/public";
 }

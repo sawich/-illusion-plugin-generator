@@ -20,7 +20,7 @@ class BgmLoaderPlugin implements IPlugin {
   constructor(info: IParams) {
     this.#builder = info.builder;
     this.#lang = info.builder.lang({
-      uuid: this.#langUuid,
+      uuid: this.#uuidLang,
       name: "BGMLoader",
       desc:
         "Loads custom BGMs and clips played on game startup. Stock audio is replaced during runtime by custom clips from BepInEx\\BGM and BepInEx\\IntroClips directories",
@@ -54,12 +54,10 @@ class BgmLoaderPlugin implements IPlugin {
     });
 
     const info: IContainer = {
-      games: [Game.KK],
+      games: [{ id: Game.KK, uuid: "15e503a0-fbda-46e9-9bd7-68ce6578d818", deps: [] }],
       lang: this.#lang,
-      uuid: this.#kkUuid,
       uuidentity: this.#uuidentity,
       nodes: [this.#placer, resolver, mover],
-      deps: [],
     };
 
     this.#builder.addPlugin(info);
@@ -70,16 +68,14 @@ class BgmLoaderPlugin implements IPlugin {
   #builder: PackageBuilder;
   #uuidentity: string;
 
-  #langUuid = "4df25152-dc91-4b31-bfa4-904447a02a85";
-
-  #kkUuid = "15e503a0-fbda-46e9-9bd7-68ce6578d818";
+  #uuidLang = "4df25152-dc91-4b31-bfa4-904447a02a85";
 }
 
 class ColorCorrectorPlugin implements IPlugin {
   constructor(info: IParams) {
     this.#builder = info.builder;
     this.#lang = info.builder.lang({
-      uuid: this.#langUuid,
+      uuid: this.#uuidLang,
       name: "ColorCorrector",
       desc: "Allows configuration of some post-processing filters. (change of bloom amount, disable saturation filter)",
     });
@@ -112,12 +108,10 @@ class ColorCorrectorPlugin implements IPlugin {
     });
 
     const info: IContainer = {
-      games: [Game.KK],
+      games: [{ id: Game.KK, uuid: "e0a9d3b3-9809-41f2-9c1c-fbb935239b0a", deps: [] }],
       lang: this.#lang,
-      uuid: this.#kkUuid,
       uuidentity: this.#uuidentity,
       nodes: [this.#placer, resolver, mover],
-      deps: [],
     };
 
     this.#builder.addPlugin(info);
@@ -128,9 +122,7 @@ class ColorCorrectorPlugin implements IPlugin {
   #builder: PackageBuilder;
   #uuidentity: string;
 
-  #langUuid = "54daee20-d190-42ff-9756-438798cec16c";
-
-  #kkUuid = "e0a9d3b3-9809-41f2-9c1c-fbb935239b0a";
+  #uuidLang = "54daee20-d190-42ff-9756-438798cec16c";
 }
 
 class BepisPluginsPlugin implements IPlugin {

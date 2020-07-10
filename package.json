@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/main.js",
   "scripts": {
-    "b": "node dist/main.js",
+    "b": "node --trace-warnings dist/main.js",
     "c": "tsc",
     "w": "tsc --watch"
   },
