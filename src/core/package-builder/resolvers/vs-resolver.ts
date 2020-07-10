@@ -1,17 +1,22 @@
 import { IBuildable } from "../types/buildable";
-import { Resolver } from "../types/resolver";
 import { Node } from "../types/node";
+import { Resolver } from "../types/resolver";
 
 export class VSProjectResolver implements IBuildable {
   build(): object {
-    return { file: this.#file };
+    return {
+      file: this.#file,
+      ignore: this.#ignore,
+    };
   }
 
-  constructor(file: string) {
-    this.#file = file;
+  constructor(info: { file: string; ignore: string[] }) {
+    this.#file = info.file;
+    this.#ignore = info.ignore;
   }
 
   #file: string;
+  #ignore: string[];
 }
 
 export class VSResolver implements IBuildable {
@@ -20,14 +25,17 @@ export class VSResolver implements IBuildable {
       type: Node.Resolver,
       node: {
         type: Resolver.VisualStudio,
-        build: this.#build.map((b) => b.build()),
+        dir: this.#dir,
+        projects: this.#projects.map((b) => b.build()),
       },
     };
   }
 
-  constructor(entity: { build: IBuildable[] }) {
-    this.#build = entity.build;
+  constructor(entity: { dir: string; build: IBuildable[] }) {
+    this.#dir = entity.dir;
+    this.#projects = entity.build;
   }
 
-  #build: IBuildable[];
+  #dir: string;
+  #projects: IBuildable[];
 }

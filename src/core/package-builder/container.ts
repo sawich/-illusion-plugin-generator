@@ -1,6 +1,6 @@
-import { Game } from "./types/game";
 import { Lang } from "./lang";
 import { IBuildable } from "./types/buildable";
+import { Game } from "./types/game";
 
 export interface IContainer {
   games: Game[];
@@ -30,8 +30,8 @@ export class Container implements IBuildable {
 
   build() {
     return {
-      uuid: this.#uuid,
-      uuidentity: this.#uuidentity,
+      // uuid: this.#uuid,
+      // uuidentity: this.#uuidentity,
       nodes: this.#nodes.map((b) => b.build()),
       dependence: this.#dependence,
     };

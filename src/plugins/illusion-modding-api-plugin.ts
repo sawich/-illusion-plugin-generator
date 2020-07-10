@@ -1,10 +1,10 @@
-import { Lang } from "../core/package-builder/lang";
-import { Game } from "../core/package-builder/types/game";
-import { GitPlacer } from "../core/package-builder/places/git-placer";
 import { PackageBuilder } from "../core/package-builder";
 import { IContainer } from "../core/package-builder/container";
-import { VSProjectResolver, VSResolver } from "../core/package-builder/resolvers/vs-resolver";
+import { Lang } from "../core/package-builder/lang";
 import { FileMover } from "../core/package-builder/movers/file-mover";
+import { GitPlacer } from "../core/package-builder/places/git-placer";
+import { VSProjectResolver, VSResolver } from "../core/package-builder/resolvers/vs-resolver";
+import { Game } from "../core/package-builder/types/game";
 
 class BetterHScenesPlugin {
   constructor(builder: PackageBuilder) {
@@ -23,10 +23,16 @@ class BetterHScenesPlugin {
 
   private addForHs2() {
     const resolver = new VSResolver({
-      build: [new VSProjectResolver("HS2_BetterHScenes/HS2_BetterHScenes.csproj")],
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "HS2_BetterHScenes/HS2_BetterHScenes.csproj",
+          ignore: [],
+        }),
+      ],
     });
 
-    const placer = new GitPlacer({ url: "https://github.com/Mantas-2155X/BetterHScenes" });
+    const placer = new GitPlacer({ url: "https://github.com/IllusionMods/IllusionModdingAPI" });
 
     const mover = new FileMover({
       files: [
@@ -51,10 +57,16 @@ class BetterHScenesPlugin {
 
   private addForAi() {
     const resolver = new VSResolver({
-      build: [new VSProjectResolver("AI_BetterHScenes/AI_BetterHScenes.csproj")],
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "AI_BetterHScenes/AI_BetterHScenes.csproj",
+          ignore: [],
+        }),
+      ],
     });
 
-    const placer = new GitPlacer({ url: "https://github.com/Mantas-2155X/BetterHScenes" });
+    const placer = new GitPlacer({ url: "https://github.com/IllusionMods/IllusionModdingAPI" });
 
     const mover = new FileMover({
       files: [
@@ -79,7 +91,9 @@ class BetterHScenesPlugin {
 
   #lang: Lang;
   #builder: PackageBuilder;
+
   #langUuid = "1885f293-ed59-4ec2-8746-14625a9c2ab3";
+
   #hs2Uuid = "4bc31922-a273-4cbb-b0b2-5cb565e58790";
   #aiUuid = "504f6621-0861-4f2f-bf8d-f8ad3d6c3558";
 

@@ -1,10 +1,10 @@
-import { Lang } from "../core/package-builder/lang";
-import { Game } from "../core/package-builder/types/game";
-import { GitPlacer } from "../core/package-builder/places/git-placer";
 import { PackageBuilder } from "../core/package-builder";
 import { IContainer } from "../core/package-builder/container";
-import { VSResolver, VSProjectResolver } from "../core/package-builder/resolvers/vs-resolver";
+import { Lang } from "../core/package-builder/lang";
 import { FileMover } from "../core/package-builder/movers/file-mover";
+import { GitPlacer } from "../core/package-builder/places/git-placer";
+import { VSProjectResolver, VSResolver } from "../core/package-builder/resolvers/vs-resolver";
+import { Game } from "../core/package-builder/types/game";
 
 class BepInExPlugin {
   constructor(builder: PackageBuilder) {
@@ -14,9 +14,16 @@ class BepInExPlugin {
 
   Use() {
     const resolver = new VSResolver({
+      dir: "/",
       build: [
-        new VSProjectResolver("BepInEx/BepInEx.csproj"),
-        new VSProjectResolver("BepInEx.Preloader/BepInEx.Preloader.csproj"),
+        new VSProjectResolver({
+          file: "BepInEx/BepInEx.csproj",
+          ignore: ["UnityEngine"],
+        }),
+        new VSProjectResolver({
+          file: "BepInEx.Preloader/BepInEx.Preloader.csproj",
+          ignore: [],
+        }),
       ],
     });
 
@@ -47,7 +54,7 @@ class BepInExPlugin {
       games: [Game.PH, Game.HS1, Game.KK, Game.AI, Game.HS2],
       lang: this.#lang,
       uuid: this.#uuid,
-      uuidentity: this.#uuidentity,
+      uuidentity: this.#uuid,
       nodes: [placer, resolver, mover],
       deps: [],
     };
@@ -57,8 +64,8 @@ class BepInExPlugin {
 
   #lang: Lang;
   #builder: PackageBuilder;
+
   #uuid = "2f94706f-97e3-4274-8ed1-53fbd1c82498";
-  #uuidentity = "77369110-1035-4f83-9a85-a0c5dea31071";
 }
 
 export class ConfigurationManagerPlugin {
@@ -73,7 +80,22 @@ export class ConfigurationManagerPlugin {
 
   Use() {
     const resolver = new VSResolver({
-      build: [new VSProjectResolver("ConfigurationManager/ConfigurationManager.csproj")],
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "ConfigurationManager/ConfigurationManager.csproj",
+          ignore: [
+            "UnityEngine",
+            "0Harmony",
+            "Mono.Cecil",
+            "Mono.Cecil.Mdb",
+            "Mono.Cecil.Pdb",
+            "Mono.Cecil.Rocks",
+            "MonoMod.RuntimeDetour",
+            "MonoMod.Utils",
+          ],
+        }),
+      ],
     });
 
     const placer = new GitPlacer({ url: "https://github.com/BepInEx/BepInEx.ConfigurationManager" });
@@ -91,7 +113,7 @@ export class ConfigurationManagerPlugin {
       games: [Game.PH, Game.HS1, Game.KK, Game.AI, Game.HS2],
       lang: this.#lang,
       uuid: this.#uuid,
-      uuidentity: this.#uuidentity,
+      uuidentity: this.#uuid,
       nodes: [placer, resolver, mover],
       deps: ["2f94706f-97e3-4274-8ed1-53fbd1c82498"],
     };
@@ -101,8 +123,8 @@ export class ConfigurationManagerPlugin {
 
   #lang: Lang;
   #builder: PackageBuilder;
+
   #uuid = "31388055-2886-40f7-9b43-c6ae146875da";
-  #uuidentity = "238d66cf-179c-4a1e-9bcc-0f863ff06671";
 }
 
 export const ConfigurationManagerPluginAdd = (builder: PackageBuilder) => {

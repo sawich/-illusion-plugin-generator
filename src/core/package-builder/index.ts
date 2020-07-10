@@ -1,12 +1,14 @@
-import { Container, IContainer } from "./container";
-import { open, writeFile, unlink, readdir } from "fs/promises";
-import { Lang, ILang } from "./lang";
+import { open, readdir, unlink, writeFile } from "fs/promises";
 import { resolve } from "path";
+
+import { Container, IContainer } from "./container";
+import { ILang, Lang } from "./lang";
 
 interface IGrouped {
   [key: number]: {
     uuid: string;
     lang: string;
+    uuidentity: string;
   }[];
 }
 
@@ -42,7 +44,7 @@ export class PackageBuilder {
     for (const plugin of this.#plugins) {
       const builded = plugin.build();
 
-      const path = resolve(this.#apiWorkDir, "scripts", `${builded.uuid}.json`);
+      const path = resolve(this.#apiWorkDir, "scripts", `${plugin.uuid}.json`);
       writeFile(path, JSON.stringify(builded), "utf-8");
     }
   }
@@ -53,6 +55,7 @@ export class PackageBuilder {
         (prev[game] = prev[game] || []).push({
           uuid: curr.uuid,
           lang: curr.lang.uuid,
+          uuidentity: curr.uuidentity,
         });
       }
       return prev;
