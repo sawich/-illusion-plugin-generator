@@ -1,3 +1,5 @@
+import { IPackage } from "src/core/package-builder/types/package";
+
 import { PackageBuilder } from "../core/package-builder";
 import { IContainer } from "../core/package-builder/container";
 import { Lang } from "../core/package-builder/lang";
@@ -5,8 +7,13 @@ import { FileMover } from "../core/package-builder/movers/file-mover";
 import { GitPlacer } from "../core/package-builder/places/git-placer";
 import { VSProjectResolver, VSResolver } from "../core/package-builder/resolvers/vs-resolver";
 import { Game } from "../core/package-builder/types/game";
+import { BepInExPlugin, ConfigurationManagerPlugin } from "./bep-in-ex-plugin";
 
-class HCharaSwitcherPlugin {
+export class HCharaSwitcherPlugin implements IPackage {
+  static get Hs2Uuid() {
+    return "f72d5253-c424-4910-8d5f-7ad96a34710d";
+  }
+
   constructor(builder: PackageBuilder) {
     this.#builder = builder;
     this.#lang = builder.lang({
@@ -42,8 +49,8 @@ class HCharaSwitcherPlugin {
       games: [
         {
           id: Game.HS2,
-          uuid: "f72d5253-c424-4910-8d5f-7ad96a34710d",
-          deps: ["83f46fb9-a52d-45a4-8823-3858d3e4c605", "78402dca-9897-4e76-ae02-ee349a511110"],
+          uuid: HCharaSwitcherPlugin.Hs2Uuid,
+          deps: [BepInExPlugin.Hs2Uuid, ConfigurationManagerPlugin.Hs2Uuid],
         },
       ],
       lang: this.#lang,

@@ -1,3 +1,5 @@
+import { IPackage } from "src/core/package-builder/types/package";
+
 import { PackageBuilder } from "../core/package-builder";
 import { IContainer } from "../core/package-builder/container";
 import { Lang } from "../core/package-builder/lang";
@@ -5,8 +7,21 @@ import { FileMover } from "../core/package-builder/movers/file-mover";
 import { GitPlacer } from "../core/package-builder/places/git-placer";
 import { VSProjectResolver, VSResolver } from "../core/package-builder/resolvers/vs-resolver";
 import { Game } from "../core/package-builder/types/game";
+import { BepInExPlugin } from "./bep-in-ex-plugin";
 
-class IllusionBrowserFoldersPlugin {
+class IllusionBrowserFoldersPlugin implements IPackage {
+  static get Hs2Uuid() {
+    return "3c57128a-e135-4824-b970-473d7210eea1";
+  }
+
+  static get AiUuid() {
+    return "86640c8f-875c-4728-b272-f80a53e6fbd5";
+  }
+
+  static get KkUuid() {
+    return "66b16a14-4fd9-4fce-9c73-db7b3d74d820";
+  }
+
   constructor(builder: PackageBuilder) {
     this.#builder = builder;
     this.#lang = builder.lang({
@@ -45,9 +60,7 @@ class IllusionBrowserFoldersPlugin {
     });
 
     const info: IContainer = {
-      games: [
-        { id: Game.HS2, uuid: "3c57128a-e135-4824-b970-473d7210eea1", deps: ["83f46fb9-a52d-45a4-8823-3858d3e4c605"] },
-      ],
+      games: [{ id: Game.HS2, uuid: IllusionBrowserFoldersPlugin.Hs2Uuid, deps: [BepInExPlugin.Hs2Uuid] }],
       lang: this.#lang,
       uuidEntity: this.#uuidEntity,
       nodes: [placer, resolver, mover],
@@ -79,9 +92,7 @@ class IllusionBrowserFoldersPlugin {
     });
 
     const info: IContainer = {
-      games: [
-        { id: Game.AI, uuid: "86640c8f-875c-4728-b272-f80a53e6fbd5", deps: ["6665aecd-9eef-4856-b941-4bc397d80eff"] },
-      ],
+      games: [{ id: Game.AI, uuid: IllusionBrowserFoldersPlugin.AiUuid, deps: [BepInExPlugin.AiUuid] }],
       lang: this.#lang,
       uuidEntity: this.#uuidEntity,
       nodes: [placer, resolver, mover],
@@ -113,9 +124,7 @@ class IllusionBrowserFoldersPlugin {
     });
 
     const info: IContainer = {
-      games: [
-        { id: Game.KK, uuid: "66b16a14-4fd9-4fce-9c73-db7b3d74d820", deps: ["07259b2c-efb9-479d-a9e7-46f0c6c4dceb"] },
-      ],
+      games: [{ id: Game.KK, uuid: IllusionBrowserFoldersPlugin.KkUuid, deps: [BepInExPlugin.KkUuid] }],
       lang: this.#lang,
       uuidEntity: this.#uuidEntity,
       nodes: [placer, resolver, mover],

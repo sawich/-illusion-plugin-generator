@@ -1,3 +1,5 @@
+import { IPackage } from "src/core/package-builder/types/package";
+
 import { PackageBuilder } from "../core/package-builder";
 import { IContainer } from "../core/package-builder/container";
 import { Lang } from "../core/package-builder/lang";
@@ -6,17 +8,13 @@ import { GitPlacer } from "../core/package-builder/places/git-placer";
 import { VSProjectResolver, VSResolver } from "../core/package-builder/resolvers/vs-resolver";
 import { Game } from "../core/package-builder/types/game";
 
-interface IPlugin {
-  Use(): void;
-}
-
 interface IParams {
   builder: PackageBuilder;
   uuidEntity: string;
   placer: GitPlacer;
 }
 
-class BgmLoaderPlugin implements IPlugin {
+class BgmLoaderPlugin implements IPackage {
   constructor(info: IParams) {
     this.#builder = info.builder;
     this.#lang = info.builder.lang({
@@ -71,7 +69,7 @@ class BgmLoaderPlugin implements IPlugin {
   #uuidLang = "4df25152-dc91-4b31-bfa4-904447a02a85";
 }
 
-class ColorCorrectorPlugin implements IPlugin {
+class ColorCorrectorPlugin implements IPackage {
   constructor(info: IParams) {
     this.#builder = info.builder;
     this.#lang = info.builder.lang({
@@ -125,7 +123,7 @@ class ColorCorrectorPlugin implements IPlugin {
   #uuidLang = "54daee20-d190-42ff-9756-438798cec16c";
 }
 
-class BepisPluginsPlugin implements IPlugin {
+class BepisPluginsPlugin implements IPackage {
   constructor(builder: PackageBuilder) {
     const uuidEntity = "0f70a52f-c506-4697-bd5f-0304e9f30c4a";
     const placer = new GitPlacer({ url: "https://github.com/IllusionMods/BepisPlugins" });
@@ -141,7 +139,7 @@ class BepisPluginsPlugin implements IPlugin {
     }
   }
 
-  #plugins: IPlugin[] = [];
+  #plugins: IPackage[] = [];
 }
 
 export const BepisPluginsPluginAdd = (builder: PackageBuilder) => {

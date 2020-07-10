@@ -1,3 +1,5 @@
+import { IPackage } from "src/core/package-builder/types/package";
+
 import { PackageBuilder } from "../core/package-builder";
 import { IContainer } from "../core/package-builder/container";
 import { Lang } from "../core/package-builder/lang";
@@ -5,8 +7,17 @@ import { FileMover } from "../core/package-builder/movers/file-mover";
 import { GitPlacer } from "../core/package-builder/places/git-placer";
 import { VSProjectResolver, VSResolver } from "../core/package-builder/resolvers/vs-resolver";
 import { Game } from "../core/package-builder/types/game";
+import { BepInExPlugin, ConfigurationManagerPlugin } from "./bep-in-ex-plugin";
 
-class BetterHScenesPlugin {
+export class BetterHScenesPlugin implements IPackage {
+  static get Hs2Uuid() {
+    return "4bc31922-a273-4cbb-b0b2-5cb565e58790";
+  }
+
+  static get AiUuid() {
+    return "504f6621-0861-4f2f-bf8d-f8ad3d6c3558";
+  }
+
   constructor(builder: PackageBuilder) {
     this.#builder = builder;
     this.#lang = builder.lang({
@@ -44,7 +55,13 @@ class BetterHScenesPlugin {
     });
 
     const info: IContainer = {
-      games: [{ id: Game.HS2, uuid: "4bc31922-a273-4cbb-b0b2-5cb565e58790", deps: [] }],
+      games: [
+        {
+          id: Game.HS2,
+          uuid: BetterHScenesPlugin.Hs2Uuid,
+          deps: [BepInExPlugin.Hs2Uuid, ConfigurationManagerPlugin.Hs2Uuid],
+        },
+      ],
       lang: this.#lang,
       uuidEntity: this.#uuidEntity,
       nodes: [placer, resolver, mover],
@@ -76,7 +93,13 @@ class BetterHScenesPlugin {
     });
 
     const info: IContainer = {
-      games: [{ id: Game.AI, uuid: "504f6621-0861-4f2f-bf8d-f8ad3d6c3558", deps: [] }],
+      games: [
+        {
+          id: Game.AI,
+          uuid: BetterHScenesPlugin.AiUuid,
+          deps: [BepInExPlugin.AiUuid, ConfigurationManagerPlugin.AiUuid],
+        },
+      ],
       lang: this.#lang,
       uuidEntity: this.#uuidEntity,
       nodes: [placer, resolver, mover],

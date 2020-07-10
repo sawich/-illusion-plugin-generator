@@ -6,7 +6,7 @@
 // import { VSProjectResolver, VSResolver } from "../core/package-builder/resolvers/vs-resolver";
 // import { Game } from "../core/package-builder/types/game";
 
-// class BetterHScenesPlugin {
+// class BetterHScenesPlugin implements IPackage {
 //   constructor(builder: PackageBuilder) {
 //     this.#builder = builder;
 //     this.#lang = builder.lang({
