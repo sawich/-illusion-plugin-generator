@@ -8,7 +8,7 @@ interface IGrouped {
   [key: number]: {
     uuid: string;
     lang: string;
-    uuidentity: string;
+    uuidEntity: string;
   }[];
 }
 
@@ -56,7 +56,7 @@ export class PackageBuilder {
         (prev[game.id] = prev[game.id] || []).push({
           uuid: game.uuid,
           lang: curr.lang.uuid,
-          uuidentity: curr.uuidentity,
+          uuidEntity: curr.uuidEntity,
         });
       }
       return prev;

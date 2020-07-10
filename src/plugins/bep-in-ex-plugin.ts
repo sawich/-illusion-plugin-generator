@@ -59,7 +59,7 @@ class BepInExPlugin {
         { id: Game.HS2, uuid: "83f46fb9-a52d-45a4-8823-3858d3e4c605", deps: [] },
       ],
       lang: this.#lang,
-      uuidentity: this.#uuidentity,
+      uuidEntity: this.#uuidEntity,
       nodes: [placer, resolver, mover],
     };
 
@@ -69,7 +69,7 @@ class BepInExPlugin {
   #lang: Lang;
   #builder: PackageBuilder;
   #uuidLang = "e30cfeba-c751-4dbb-a350-1209acd960e1";
-  #uuidentity = "2f94706f-97e3-4274-8ed1-53fbd1c82498";
+  #uuidEntity = "2f94706f-97e3-4274-8ed1-53fbd1c82498";
 }
 
 export class ConfigurationManagerPlugin {
@@ -122,7 +122,7 @@ export class ConfigurationManagerPlugin {
         { id: Game.HS2, uuid: "78402dca-9897-4e76-ae02-ee349a511110", deps: ["83f46fb9-a52d-45a4-8823-3858d3e4c605"] },
       ],
       lang: this.#lang,
-      uuidentity: this.#uuidentity,
+      uuidEntity: this.#uuidEntity,
       nodes: [placer, resolver, mover],
     };
 
@@ -133,7 +133,7 @@ export class ConfigurationManagerPlugin {
   #builder: PackageBuilder;
 
   #uuidLang = "c3db40bf-d97d-4cd4-859c-9dd453f5e789";
-  #uuidentity = "31388055-2886-40f7-9b43-c6ae146875da";
+  #uuidEntity = "31388055-2886-40f7-9b43-c6ae146875da";
 }
 
 export const ConfigurationManagerPluginAdd = (builder: PackageBuilder) => {

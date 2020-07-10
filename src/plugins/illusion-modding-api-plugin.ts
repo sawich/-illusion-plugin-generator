@@ -46,7 +46,7 @@
 //     const info: IContainer = {
 //       games: [{ id: Game.HS2, uuid: "4bc31922-a273-4cbb-b0b2-5cb565e58790" }],
 //       lang: this.#lang,
-//       uuidentity: this.#uuidentity,
+//       uuidEntity: this.#uuidEntity,
 //       nodes: [placer, resolver, mover],
 //       deps: [],
 //     };
@@ -79,7 +79,7 @@
 //     const info: IContainer = {
 //       games: [{ id: Game.AI, uuid: "504f6621-0861-4f2f-bf8d-f8ad3d6c3558" }],
 //       lang: this.#lang,
-//       uuidentity: this.#uuidentity,
+//       uuidEntity: this.#uuidEntity,
 //       nodes: [placer, resolver, mover],
 //       deps: [],
 //     };
@@ -90,7 +90,7 @@
 //   #lang: Lang;
 //   #builder: PackageBuilder;
 
-//   #uuidentity = "22b08948-99f4-4ef0-86a5-b20506c1ca61";
+//   #uuidEntity = "22b08948-99f4-4ef0-86a5-b20506c1ca61";
 // }
 
 // export const BetterHScenesPluginAdd = (builder: PackageBuilder) => {

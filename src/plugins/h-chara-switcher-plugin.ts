@@ -47,7 +47,7 @@ class HCharaSwitcherPlugin {
         },
       ],
       lang: this.#lang,
-      uuidentity: this.#uuidentity,
+      uuidEntity: this.#uuidEntity,
       nodes: [placer, resolver, mover],
     };
 
@@ -57,7 +57,7 @@ class HCharaSwitcherPlugin {
   #lang: Lang;
   #builder: PackageBuilder;
 
-  #uuidentity = "4b11249a-f9a8-46d0-b372-748eb61091fe";
+  #uuidEntity = "4b11249a-f9a8-46d0-b372-748eb61091fe";
 }
 
 export const HCharaSwitcherPluginAdd = (builder: PackageBuilder) => {

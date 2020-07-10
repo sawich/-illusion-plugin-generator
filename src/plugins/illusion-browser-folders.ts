@@ -49,7 +49,7 @@ class IllusionBrowserFoldersPlugin {
         { id: Game.HS2, uuid: "3c57128a-e135-4824-b970-473d7210eea1", deps: ["83f46fb9-a52d-45a4-8823-3858d3e4c605"] },
       ],
       lang: this.#lang,
-      uuidentity: this.#uuidentity,
+      uuidEntity: this.#uuidEntity,
       nodes: [placer, resolver, mover],
     };
 
@@ -83,7 +83,7 @@ class IllusionBrowserFoldersPlugin {
         { id: Game.AI, uuid: "86640c8f-875c-4728-b272-f80a53e6fbd5", deps: ["6665aecd-9eef-4856-b941-4bc397d80eff"] },
       ],
       lang: this.#lang,
-      uuidentity: this.#uuidentity,
+      uuidEntity: this.#uuidEntity,
       nodes: [placer, resolver, mover],
     };
 
@@ -117,7 +117,7 @@ class IllusionBrowserFoldersPlugin {
         { id: Game.KK, uuid: "66b16a14-4fd9-4fce-9c73-db7b3d74d820", deps: ["07259b2c-efb9-479d-a9e7-46f0c6c4dceb"] },
       ],
       lang: this.#lang,
-      uuidentity: this.#uuidentity,
+      uuidEntity: this.#uuidEntity,
       nodes: [placer, resolver, mover],
     };
 
@@ -127,7 +127,7 @@ class IllusionBrowserFoldersPlugin {
   #lang: Lang;
   #builder: PackageBuilder;
 
-  #uuidentity = "1865abff-3d7e-44d9-9e25-8ee659439d0a";
+  #uuidEntity = "1865abff-3d7e-44d9-9e25-8ee659439d0a";
 }
 
 export const IllusionBrowserFoldersPluginAdd = (builder: PackageBuilder) => {

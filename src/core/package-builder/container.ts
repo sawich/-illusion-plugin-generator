@@ -13,13 +13,13 @@ type IGames = IGame[];
 export interface IContainer {
   games: IGames;
   lang: Lang;
-  uuidentity: string;
+  uuidEntity: string;
   nodes: IBuildable[];
 }
 
 export class Container {
-  get uuidentity() {
-    return this.#uuidentity;
+  get uuidEntity() {
+    return this.#uuidEntity;
   }
 
   get lang() {
@@ -45,13 +45,13 @@ export class Container {
   constructor(container: IContainer) {
     this.#games = container.games;
     this.#lang = container.lang;
-    this.#uuidentity = container.uuidentity;
+    this.#uuidEntity = container.uuidEntity;
     this.#nodes = container.nodes;
   }
 
   #games: IGames;
   #lang: Lang;
-  #uuidentity: string;
+  #uuidEntity: string;
   #nodes: IBuildable[];
 }
 

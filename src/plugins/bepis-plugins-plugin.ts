@@ -12,7 +12,7 @@ interface IPlugin {
 
 interface IParams {
   builder: PackageBuilder;
-  uuidentity: string;
+  uuidEntity: string;
   placer: GitPlacer;
 }
 
@@ -25,7 +25,7 @@ class BgmLoaderPlugin implements IPlugin {
       desc:
         "Loads custom BGMs and clips played on game startup. Stock audio is replaced during runtime by custom clips from BepInEx\\BGM and BepInEx\\IntroClips directories",
     });
-    this.#uuidentity = info.uuidentity;
+    this.#uuidEntity = info.uuidEntity;
     this.#placer = info.placer;
   }
 
@@ -56,7 +56,7 @@ class BgmLoaderPlugin implements IPlugin {
     const info: IContainer = {
       games: [{ id: Game.KK, uuid: "15e503a0-fbda-46e9-9bd7-68ce6578d818", deps: [] }],
       lang: this.#lang,
-      uuidentity: this.#uuidentity,
+      uuidEntity: this.#uuidEntity,
       nodes: [this.#placer, resolver, mover],
     };
 
@@ -66,7 +66,7 @@ class BgmLoaderPlugin implements IPlugin {
   #lang: Lang;
   #placer: GitPlacer;
   #builder: PackageBuilder;
-  #uuidentity: string;
+  #uuidEntity: string;
 
   #uuidLang = "4df25152-dc91-4b31-bfa4-904447a02a85";
 }
@@ -79,7 +79,7 @@ class ColorCorrectorPlugin implements IPlugin {
       name: "ColorCorrector",
       desc: "Allows configuration of some post-processing filters. (change of bloom amount, disable saturation filter)",
     });
-    this.#uuidentity = info.uuidentity;
+    this.#uuidEntity = info.uuidEntity;
     this.#placer = info.placer;
   }
 
@@ -110,7 +110,7 @@ class ColorCorrectorPlugin implements IPlugin {
     const info: IContainer = {
       games: [{ id: Game.KK, uuid: "e0a9d3b3-9809-41f2-9c1c-fbb935239b0a", deps: [] }],
       lang: this.#lang,
-      uuidentity: this.#uuidentity,
+      uuidEntity: this.#uuidEntity,
       nodes: [this.#placer, resolver, mover],
     };
 
@@ -120,18 +120,18 @@ class ColorCorrectorPlugin implements IPlugin {
   #lang: Lang;
   #placer: GitPlacer;
   #builder: PackageBuilder;
-  #uuidentity: string;
+  #uuidEntity: string;
 
   #uuidLang = "54daee20-d190-42ff-9756-438798cec16c";
 }
 
 class BepisPluginsPlugin implements IPlugin {
   constructor(builder: PackageBuilder) {
-    const uuidentity = "0f70a52f-c506-4697-bd5f-0304e9f30c4a";
+    const uuidEntity = "0f70a52f-c506-4697-bd5f-0304e9f30c4a";
     const placer = new GitPlacer({ url: "https://github.com/IllusionMods/BepisPlugins" });
     this.#plugins.push(
-      new BgmLoaderPlugin({ builder, uuidentity, placer }),
-      new ColorCorrectorPlugin({ builder, uuidentity, placer })
+      new BgmLoaderPlugin({ builder, uuidEntity, placer }),
+      new ColorCorrectorPlugin({ builder, uuidEntity, placer })
     );
   }
 
