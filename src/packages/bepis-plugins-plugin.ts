@@ -1,5 +1,3 @@
-import { IPackage } from "src/core/package-builder/types/package";
-
 import { PackageBuilder } from "../core/package-builder";
 import { IContainer } from "../core/package-builder/container";
 import { Lang } from "../core/package-builder/lang";
@@ -7,6 +5,7 @@ import { FileMover } from "../core/package-builder/movers/file-mover";
 import { GitPlacer } from "../core/package-builder/places/git-placer";
 import { VSProjectResolver, VSResolver } from "../core/package-builder/resolvers/vs-resolver";
 import { Game } from "../core/package-builder/types/game";
+import { IPackage } from "../core/package-builder/types/package";
 
 interface IParams {
   builder: PackageBuilder;
@@ -36,7 +35,7 @@ class BgmLoaderPlugin implements IPackage {
       dir: "/",
       build: [
         new VSProjectResolver({
-          file: "src/KK_BGMLoader/KK_BGMLoader.csproj",
+          file: "../KK_BGMLoader/KK_BGMLoader.csproj",
           ignore: [],
         }),
       ],
@@ -90,7 +89,7 @@ class ColorCorrectorPlugin implements IPackage {
       dir: "/",
       build: [
         new VSProjectResolver({
-          file: "src/KK_ColorCorrector/KK_ColorCorrector.csproj",
+          file: "../KK_ColorCorrector/KK_ColorCorrector.csproj",
           ignore: [],
         }),
       ],
@@ -127,19 +126,20 @@ class BepisPluginsPlugin implements IPackage {
   constructor(builder: PackageBuilder) {
     const uuidEntity = "0f70a52f-c506-4697-bd5f-0304e9f30c4a";
     const placer = new GitPlacer({ url: "https://github.com/IllusionMods/BepisPlugins" });
-    this.#plugins.push(
+
+    this.#packages.push(
       new BgmLoaderPlugin({ builder, uuidEntity, placer }),
       new ColorCorrectorPlugin({ builder, uuidEntity, placer })
     );
   }
 
   Use() {
-    for (const plugin of this.#plugins) {
-      plugin.Use();
+    for (const pack of this.#packages) {
+      pack.Use();
     }
   }
 
-  #plugins: IPackage[] = [];
+  #packages: IPackage[] = [];
 }
 
 export const BepisPluginsPluginAdd = (builder: PackageBuilder) => {

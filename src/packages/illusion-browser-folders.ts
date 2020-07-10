@@ -1,5 +1,3 @@
-import { IPackage } from "src/core/package-builder/types/package";
-
 import { PackageBuilder } from "../core/package-builder";
 import { IContainer } from "../core/package-builder/container";
 import { Lang } from "../core/package-builder/lang";
@@ -7,6 +5,7 @@ import { FileMover } from "../core/package-builder/movers/file-mover";
 import { GitPlacer } from "../core/package-builder/places/git-placer";
 import { VSProjectResolver, VSResolver } from "../core/package-builder/resolvers/vs-resolver";
 import { Game } from "../core/package-builder/types/game";
+import { IPackage } from "../core/package-builder/types/package";
 import { BepInExPlugin } from "./bep-in-ex-plugin";
 
 class IllusionBrowserFoldersPlugin implements IPackage {
@@ -42,7 +41,7 @@ class IllusionBrowserFoldersPlugin implements IPackage {
       dir: "/src",
       build: [
         new VSProjectResolver({
-          file: "src/HS2_BrowserFolders/HS2_BrowserFolders.csproj",
+          file: "../HS2_BrowserFolders/HS2_BrowserFolders.csproj",
           ignore: [],
         }),
       ],
@@ -74,7 +73,7 @@ class IllusionBrowserFoldersPlugin implements IPackage {
       dir: "/src",
       build: [
         new VSProjectResolver({
-          file: "src/AI_BrowserFolders/AI_BrowserFolders.csproj",
+          file: "../AI_BrowserFolders/AI_BrowserFolders.csproj",
           ignore: [],
         }),
       ],
@@ -106,7 +105,7 @@ class IllusionBrowserFoldersPlugin implements IPackage {
       dir: "/src",
       build: [
         new VSProjectResolver({
-          file: "src/KK_FolderBrowser/KK_BrowserFolders.csproj",
+          file: "../KK_FolderBrowser/KK_BrowserFolders.csproj",
           ignore: [],
         }),
       ],

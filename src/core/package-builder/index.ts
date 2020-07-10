@@ -1,6 +1,7 @@
-import { open, readdir, unlink, writeFile } from "fs/promises";
+import { mkdir, rmdir, writeFile } from "fs/promises";
 import { resolve } from "path";
 
+import { removeFiles } from "../helpers/remove-helper";
 import { Container, IContainer } from "./container";
 import { ILang, Lang } from "./lang";
 
@@ -24,20 +25,14 @@ export class PackageBuilder {
   }
 
   async build() {
-    await this.removeFiles(resolve(this.#apiWorkDir, "packages"));
-    await this.saveLists();
+    const langsPromise = this.saveLangs();
 
-    await this.removeFiles(resolve(this.#apiWorkDir, "scripts"));
-    await this.savePlugins();
+    await Promise.all([
+      removeFiles(resolve(this.#apiWorkDir, "packages")),
+      removeFiles(resolve(this.#apiWorkDir, "scripts")),
+    ]);
 
-    await this.saveLangs();
-  }
-
-  private async removeFiles(path: string) {
-    const files = await readdir(path);
-    for (const file of files) {
-      await unlink(resolve(path, file));
-    }
+    await Promise.all([this.saveLists(), this.savePlugins(), langsPromise]);
   }
 
   private async savePlugins() {
@@ -69,20 +64,19 @@ export class PackageBuilder {
   }
 
   private async saveLangs() {
-    const stream = await open("lang.json", "w");
-    await stream.write(
-      JSON.stringify(
-        Object.fromEntries(
-          this.#langs.map((lang) => [
-            lang.uuid,
-            {
-              name: lang.name,
-              description: lang.description,
-            },
-          ])
-        )
+    const data = JSON.stringify(
+      Object.fromEntries(
+        this.#langs.map((lang) => [
+          lang.uuid,
+          {
+            name: lang.name,
+            description: lang.description,
+          },
+        ])
       )
     );
+
+    await writeFile("../illusion-plugin-manager/src/i18n/langs/en/packages.json", data);
   }
 
   #langs: Lang[] = [];

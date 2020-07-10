@@ -1,5 +1,3 @@
-import { IPackage } from "src/core/package-builder/types/package";
-
 import { PackageBuilder } from "../core/package-builder";
 import { IContainer } from "../core/package-builder/container";
 import { Lang } from "../core/package-builder/lang";
@@ -7,6 +5,7 @@ import { FileMover } from "../core/package-builder/movers/file-mover";
 import { GitPlacer } from "../core/package-builder/places/git-placer";
 import { VSProjectResolver, VSResolver } from "../core/package-builder/resolvers/vs-resolver";
 import { Game } from "../core/package-builder/types/game";
+import { IPackage } from "../core/package-builder/types/package";
 import { BepInExPlugin, ConfigurationManagerPlugin } from "./bep-in-ex-plugin";
 
 export class BetterHScenesPlugin implements IPackage {
