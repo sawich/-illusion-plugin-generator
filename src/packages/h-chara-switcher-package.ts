@@ -1,28 +1,35 @@
 import { PackageBuilder } from "../core/package-builder";
-import { IContainer } from "../core/package-builder/container";
 import { Lang } from "../core/package-builder/lang";
 import { FileMover } from "../core/package-builder/movers/file-mover";
 import { GitPlacer } from "../core/package-builder/places/git-placer";
 import { VSProjectResolver, VSResolver } from "../core/package-builder/resolvers/vs-resolver";
 import { Game } from "../core/package-builder/types/game";
-import { IPackage } from "../core/package-builder/types/package";
-import { BepInExPlugin, ConfigurationManagerPlugin } from "./bep-in-ex-plugin";
+import { IPackageBuilder } from "../core/package-builder/types/package";
+import { BepInExPlugin, ConfigurationManagerPlugin } from "./bep-in-ex-package";
 
-export class HCharaSwitcherPlugin implements IPackage {
+export class HCharaSwitcherPlugin implements IPackageBuilder {
   static get Hs2Uuid() {
     return "f72d5253-c424-4910-8d5f-7ad96a34710d";
   }
 
-  constructor(builder: PackageBuilder) {
-    this.#builder = builder;
-    this.#lang = builder.lang({
+  get builder() {
+    return this.#builder;
+  }
+
+  use() {
+    this.addForHs2();
+  }
+
+  constructor() {
+    this.#builder = new PackageBuilder("4b11249a-f9a8-46d0-b372-748eb61091fe");
+    this.#lang = this.#builder.lang({
       uuid: "1b4bb2d6-87e2-45fa-aee7-a27bba9f5342",
       name: "HCharaSwitcher",
       desc: "This plugin allows you to change character cards during H scene",
     });
   }
 
-  Use() {
+  private addForHs2() {
     const resolver = new VSResolver({
       dir: "/",
       build: [
@@ -44,7 +51,7 @@ export class HCharaSwitcherPlugin implements IPackage {
       ],
     });
 
-    const info: IContainer = {
+    this.#builder.use({
       games: [
         {
           id: Game.HS2,
@@ -53,20 +60,16 @@ export class HCharaSwitcherPlugin implements IPackage {
         },
       ],
       lang: this.#lang,
-      uuidEntity: this.#uuidEntity,
       nodes: [placer, resolver, mover],
-    };
-
-    this.#builder.addPlugin(info);
+    });
   }
 
   #lang: Lang;
   #builder: PackageBuilder;
-
-  #uuidEntity = "4b11249a-f9a8-46d0-b372-748eb61091fe";
 }
 
-export const HCharaSwitcherPluginAdd = (builder: PackageBuilder) => {
-  const plugin = new HCharaSwitcherPlugin(builder);
-  plugin.Use();
+export const HCharaSwitcherPluginAdd = () => {
+  const plugin = new HCharaSwitcherPlugin();
+  plugin.use();
+  return plugin.builder;
 };

@@ -1,5 +1,9 @@
+import { PackageBuilder } from "../";
+
 export interface IPackage {
-  Use(): void;
+  use(): void;
 }
 
-export type IPackages = IPackage[];
+export interface IPackageBuilder extends IPackage {
+  builder: PackageBuilder;
+}

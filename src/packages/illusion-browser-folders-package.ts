@@ -1,14 +1,13 @@
 import { PackageBuilder } from "../core/package-builder";
-import { IContainer } from "../core/package-builder/container";
 import { Lang } from "../core/package-builder/lang";
 import { FileMover } from "../core/package-builder/movers/file-mover";
 import { GitPlacer } from "../core/package-builder/places/git-placer";
 import { VSProjectResolver, VSResolver } from "../core/package-builder/resolvers/vs-resolver";
 import { Game } from "../core/package-builder/types/game";
-import { IPackage } from "../core/package-builder/types/package";
-import { BepInExPlugin } from "./bep-in-ex-plugin";
+import { IPackageBuilder } from "../core/package-builder/types/package";
+import { BepInExPlugin } from "./bep-in-ex-package";
 
-class IllusionBrowserFoldersPlugin implements IPackage {
+class IllusionBrowserFoldersPlugin implements IPackageBuilder {
   static get Hs2Uuid() {
     return "3c57128a-e135-4824-b970-473d7210eea1";
   }
@@ -21,19 +20,23 @@ class IllusionBrowserFoldersPlugin implements IPackage {
     return "66b16a14-4fd9-4fce-9c73-db7b3d74d820";
   }
 
-  constructor(builder: PackageBuilder) {
-    this.#builder = builder;
-    this.#lang = builder.lang({
+  get builder() {
+    return this.#builder;
+  }
+
+  use() {
+    this.addForHs2();
+    this.addForAi();
+    this.addForKk();
+  }
+
+  constructor() {
+    this.#builder = new PackageBuilder("1865abff-3d7e-44d9-9e25-8ee659439d0a");
+    this.#lang = this.#builder.lang({
       uuid: "fd363547-ea54-4db1-a08c-b13a1ae64542",
       name: "BrowserFolders",
       desc: "Maker and Studio File Browser Folders for games by Illusion",
     });
-  }
-
-  Use() {
-    this.addForHs2();
-    this.addForAi();
-    this.addForKk();
   }
 
   private addForHs2() {
@@ -41,7 +44,7 @@ class IllusionBrowserFoldersPlugin implements IPackage {
       dir: "/src",
       build: [
         new VSProjectResolver({
-          file: "../HS2_BrowserFolders/HS2_BrowserFolders.csproj",
+          file: "src/HS2_BrowserFolders/HS2_BrowserFolders.csproj",
           ignore: [],
         }),
       ],
@@ -58,14 +61,11 @@ class IllusionBrowserFoldersPlugin implements IPackage {
       ],
     });
 
-    const info: IContainer = {
+    this.#builder.use({
       games: [{ id: Game.HS2, uuid: IllusionBrowserFoldersPlugin.Hs2Uuid, deps: [BepInExPlugin.Hs2Uuid] }],
       lang: this.#lang,
-      uuidEntity: this.#uuidEntity,
       nodes: [placer, resolver, mover],
-    };
-
-    this.#builder.addPlugin(info);
+    });
   }
 
   private addForAi() {
@@ -73,7 +73,7 @@ class IllusionBrowserFoldersPlugin implements IPackage {
       dir: "/src",
       build: [
         new VSProjectResolver({
-          file: "../AI_BrowserFolders/AI_BrowserFolders.csproj",
+          file: "src/AI_BrowserFolders/AI_BrowserFolders.csproj",
           ignore: [],
         }),
       ],
@@ -90,14 +90,11 @@ class IllusionBrowserFoldersPlugin implements IPackage {
       ],
     });
 
-    const info: IContainer = {
+    this.#builder.use({
       games: [{ id: Game.AI, uuid: IllusionBrowserFoldersPlugin.AiUuid, deps: [BepInExPlugin.AiUuid] }],
       lang: this.#lang,
-      uuidEntity: this.#uuidEntity,
       nodes: [placer, resolver, mover],
-    };
-
-    this.#builder.addPlugin(info);
+    });
   }
 
   private addForKk() {
@@ -105,7 +102,7 @@ class IllusionBrowserFoldersPlugin implements IPackage {
       dir: "/src",
       build: [
         new VSProjectResolver({
-          file: "../KK_FolderBrowser/KK_BrowserFolders.csproj",
+          file: "src/KK_FolderBrowser/KK_BrowserFolders.csproj",
           ignore: [],
         }),
       ],
@@ -122,23 +119,19 @@ class IllusionBrowserFoldersPlugin implements IPackage {
       ],
     });
 
-    const info: IContainer = {
+    this.#builder.use({
       games: [{ id: Game.KK, uuid: IllusionBrowserFoldersPlugin.KkUuid, deps: [BepInExPlugin.KkUuid] }],
       lang: this.#lang,
-      uuidEntity: this.#uuidEntity,
       nodes: [placer, resolver, mover],
-    };
-
-    this.#builder.addPlugin(info);
+    });
   }
 
   #lang: Lang;
   #builder: PackageBuilder;
-
-  #uuidEntity = "1865abff-3d7e-44d9-9e25-8ee659439d0a";
 }
 
-export const IllusionBrowserFoldersPluginAdd = (builder: PackageBuilder) => {
-  const plugin = new IllusionBrowserFoldersPlugin(builder);
-  plugin.Use();
+export const IllusionBrowserFoldersPluginAdd = () => {
+  const plugin = new IllusionBrowserFoldersPlugin();
+  plugin.use();
+  return plugin.builder;
 };

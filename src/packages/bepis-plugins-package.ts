@@ -1,33 +1,35 @@
+import { IPackage } from "src/core/package-builder/types/package";
+
 import { PackageBuilder } from "../core/package-builder";
-import { IContainer } from "../core/package-builder/container";
 import { Lang } from "../core/package-builder/lang";
 import { FileMover } from "../core/package-builder/movers/file-mover";
 import { GitPlacer } from "../core/package-builder/places/git-placer";
 import { VSProjectResolver, VSResolver } from "../core/package-builder/resolvers/vs-resolver";
 import { Game } from "../core/package-builder/types/game";
-import { IPackage } from "../core/package-builder/types/package";
 
 interface IParams {
   builder: PackageBuilder;
-  uuidEntity: string;
   placer: GitPlacer;
 }
 
 class BgmLoaderPlugin implements IPackage {
+  static get kkUuid() {
+    return "15e503a0-fbda-46e9-9bd7-68ce6578d818";
+  }
+
+  use() {
+    this.addForKk();
+  }
+
   constructor(info: IParams) {
     this.#builder = info.builder;
     this.#lang = info.builder.lang({
-      uuid: this.#uuidLang,
+      uuid: "4df25152-dc91-4b31-bfa4-904447a02a85",
       name: "BGMLoader",
       desc:
         "Loads custom BGMs and clips played on game startup. Stock audio is replaced during runtime by custom clips from BepInEx\\BGM and BepInEx\\IntroClips directories",
     });
-    this.#uuidEntity = info.uuidEntity;
     this.#placer = info.placer;
-  }
-
-  Use() {
-    this.addForKk();
   }
 
   private addForKk() {
@@ -35,7 +37,7 @@ class BgmLoaderPlugin implements IPackage {
       dir: "/",
       build: [
         new VSProjectResolver({
-          file: "../KK_BGMLoader/KK_BGMLoader.csproj",
+          file: "src/KK_BGMLoader/KK_BGMLoader.csproj",
           ignore: [],
         }),
       ],
@@ -50,38 +52,35 @@ class BgmLoaderPlugin implements IPackage {
       ],
     });
 
-    const info: IContainer = {
-      games: [{ id: Game.KK, uuid: "15e503a0-fbda-46e9-9bd7-68ce6578d818", deps: [] }],
+    this.#builder.use({
+      games: [{ id: Game.KK, uuid: BgmLoaderPlugin.kkUuid, deps: [] }],
       lang: this.#lang,
-      uuidEntity: this.#uuidEntity,
       nodes: [this.#placer, resolver, mover],
-    };
-
-    this.#builder.addPlugin(info);
+    });
   }
 
   #lang: Lang;
   #placer: GitPlacer;
   #builder: PackageBuilder;
-  #uuidEntity: string;
-
-  #uuidLang = "4df25152-dc91-4b31-bfa4-904447a02a85";
 }
 
 class ColorCorrectorPlugin implements IPackage {
+  static get kkUuid() {
+    return "e0a9d3b3-9809-41f2-9c1c-fbb935239b0a";
+  }
+
+  use() {
+    this.addForKk();
+  }
+
   constructor(info: IParams) {
     this.#builder = info.builder;
     this.#lang = info.builder.lang({
-      uuid: this.#uuidLang,
+      uuid: "54daee20-d190-42ff-9756-438798cec16c",
       name: "ColorCorrector",
       desc: "Allows configuration of some post-processing filters. (change of bloom amount, disable saturation filter)",
     });
-    this.#uuidEntity = info.uuidEntity;
     this.#placer = info.placer;
-  }
-
-  Use() {
-    this.addForKk();
   }
 
   private addForKk() {
@@ -89,7 +88,7 @@ class ColorCorrectorPlugin implements IPackage {
       dir: "/",
       build: [
         new VSProjectResolver({
-          file: "../KK_ColorCorrector/KK_ColorCorrector.csproj",
+          file: "src/KK_ColorCorrector/KK_ColorCorrector.csproj",
           ignore: [],
         }),
       ],
@@ -104,45 +103,45 @@ class ColorCorrectorPlugin implements IPackage {
       ],
     });
 
-    const info: IContainer = {
+    this.#builder.use({
       games: [{ id: Game.KK, uuid: "e0a9d3b3-9809-41f2-9c1c-fbb935239b0a", deps: [] }],
       lang: this.#lang,
-      uuidEntity: this.#uuidEntity,
       nodes: [this.#placer, resolver, mover],
-    };
-
-    this.#builder.addPlugin(info);
+    });
   }
 
   #lang: Lang;
   #placer: GitPlacer;
   #builder: PackageBuilder;
-  #uuidEntity: string;
-
-  #uuidLang = "54daee20-d190-42ff-9756-438798cec16c";
 }
 
 class BepisPluginsPlugin implements IPackage {
-  constructor(builder: PackageBuilder) {
-    const uuidEntity = "0f70a52f-c506-4697-bd5f-0304e9f30c4a";
-    const placer = new GitPlacer({ url: "https://github.com/IllusionMods/BepisPlugins" });
-
-    this.#packages.push(
-      new BgmLoaderPlugin({ builder, uuidEntity, placer }),
-      new ColorCorrectorPlugin({ builder, uuidEntity, placer })
-    );
+  get builder() {
+    return this.#builder;
   }
 
-  Use() {
+  use() {
     for (const pack of this.#packages) {
-      pack.Use();
+      pack.use();
     }
   }
 
+  constructor() {
+    this.#builder = new PackageBuilder("0f70a52f-c506-4697-bd5f-0304e9f30c4a");
+    const placer = new GitPlacer({ url: "https://github.com/IllusionMods/BepisPlugins" });
+
+    this.#packages.push(
+      new BgmLoaderPlugin({ builder: this.#builder, placer }),
+      new ColorCorrectorPlugin({ builder: this.#builder, placer })
+    );
+  }
+
+  #builder: PackageBuilder;
   #packages: IPackage[] = [];
 }
 
-export const BepisPluginsPluginAdd = (builder: PackageBuilder) => {
-  const plugin = new BepisPluginsPlugin(builder);
-  plugin.Use();
+export const BepisPluginsPluginAdd = () => {
+  const plugin = new BepisPluginsPlugin();
+  plugin.use();
+  return plugin.builder;
 };

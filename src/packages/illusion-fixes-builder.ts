@@ -1,16 +1,15 @@
+import { IPackage, IPackageBuilder } from "src/core/package-builder/types/package";
+
 import { PackageBuilder } from "../core/package-builder";
-import { IContainer } from "../core/package-builder/container";
 import { Lang } from "../core/package-builder/lang";
 import { FileMover } from "../core/package-builder/movers/file-mover";
 import { GitPlacer } from "../core/package-builder/places/git-placer";
 import { VSProjectResolver, VSResolver } from "../core/package-builder/resolvers/vs-resolver";
 import { Game } from "../core/package-builder/types/game";
-import { IPackage, IPackages } from "../core/package-builder/types/package";
-import { BepInExPlugin } from "./bep-in-ex-plugin";
+import { BepInExPlugin } from "./bep-in-ex-package";
 
 interface IParams {
   builder: PackageBuilder;
-  uuidEntity: string;
   placer: GitPlacer;
 }
 
@@ -31,11 +30,8 @@ export class CameraTargetPlugin implements IPackage {
     return "b7da5ec1-cbb1-445e-97bd-54b17090fd27";
   }
 
-  Use() {
-    this.addForKk();
-    this.addForAi();
-    this.addForHs2();
-    this.addForPh();
+  use() {
+    return [this.addForKk(), this.addForAi(), this.addForHs2(), this.addForPh()];
   }
 
   constructor(info: IParams) {
@@ -46,7 +42,6 @@ export class CameraTargetPlugin implements IPackage {
       desc:
         "Hides the cursor when the camera target is disabled in Studio. In AI Girl, also makes the camera target option in the game settings work properly for the character maker",
     });
-    this.#uuidEntity = info.uuidEntity;
     this.#placer = info.placer;
   }
 
@@ -55,7 +50,7 @@ export class CameraTargetPlugin implements IPackage {
       dir: "/",
       build: [
         new VSProjectResolver({
-          file: "../KK_Fix_CameraTarget/HS2_Fix_CameraTarget.csproj",
+          file: "src/KK_Fix_CameraTarget/HS2_Fix_CameraTarget.csproj",
           ignore: [],
         }),
       ],
@@ -70,14 +65,11 @@ export class CameraTargetPlugin implements IPackage {
       ],
     });
 
-    const info: IContainer = {
-      games: [{ id: Game.HS2, uuid: "094b944c-959e-4055-b8de-6cb5e963e4be", deps: [BepInExPlugin.Hs2Uuid] }],
+    this.#builder.use({
+      games: [{ id: Game.HS2, uuid: CameraTargetPlugin.Hs2Uuid, deps: [BepInExPlugin.Hs2Uuid] }],
       lang: this.#lang,
-      uuidEntity: this.#uuidEntity,
       nodes: [this.#placer, resolver, mover],
-    };
-
-    this.#builder.addPlugin(info);
+    });
   }
 
   private addForAi() {
@@ -85,7 +77,7 @@ export class CameraTargetPlugin implements IPackage {
       dir: "/",
       build: [
         new VSProjectResolver({
-          file: "../KK_Fix_CameraTarget/AI_Fix_CameraTarget.csproj",
+          file: "src/KK_Fix_CameraTarget/AI_Fix_CameraTarget.csproj",
           ignore: [],
         }),
       ],
@@ -100,14 +92,11 @@ export class CameraTargetPlugin implements IPackage {
       ],
     });
 
-    const info: IContainer = {
-      games: [{ id: Game.AI, uuid: "a21eb1a5-7721-4687-8c16-8478229e5fd2", deps: [BepInExPlugin.AiUuid] }],
+    this.#builder.use({
+      games: [{ id: Game.AI, uuid: CameraTargetPlugin.AiUuid, deps: [BepInExPlugin.AiUuid] }],
       lang: this.#lang,
-      uuidEntity: this.#uuidEntity,
       nodes: [this.#placer, resolver, mover],
-    };
-
-    this.#builder.addPlugin(info);
+    });
   }
 
   private addForPh() {
@@ -115,7 +104,7 @@ export class CameraTargetPlugin implements IPackage {
       dir: "/",
       build: [
         new VSProjectResolver({
-          file: "../KK_Fix_CameraTarget/PH_Fix_CameraTarget.csproj",
+          file: "src/KK_Fix_CameraTarget/PH_Fix_CameraTarget.csproj",
           ignore: [],
         }),
       ],
@@ -130,14 +119,11 @@ export class CameraTargetPlugin implements IPackage {
       ],
     });
 
-    const info: IContainer = {
-      games: [{ id: Game.PH, uuid: "488673d3-e47d-437e-9338-721204413631", deps: [BepInExPlugin.PhUuid] }],
+    this.#builder.use({
+      games: [{ id: Game.PH, uuid: CameraTargetPlugin.PhUuid, deps: [BepInExPlugin.PhUuid] }],
       lang: this.#lang,
-      uuidEntity: this.#uuidEntity,
       nodes: [this.#placer, resolver, mover],
-    };
-
-    this.#builder.addPlugin(info);
+    });
   }
 
   private addForKk() {
@@ -145,7 +131,7 @@ export class CameraTargetPlugin implements IPackage {
       dir: "/",
       build: [
         new VSProjectResolver({
-          file: "../KK_Fix_CameraTarget/KK_Fix_CameraTarget.csproj",
+          file: "src/KK_Fix_CameraTarget/KK_Fix_CameraTarget.csproj",
           ignore: [],
         }),
       ],
@@ -160,20 +146,16 @@ export class CameraTargetPlugin implements IPackage {
       ],
     });
 
-    const info: IContainer = {
-      games: [{ id: Game.KK, uuid: "18c7e8ab-3cf9-4bfc-b49d-8b85c4bb6ca0", deps: [BepInExPlugin.KkUuid] }],
+    this.#builder.use({
+      games: [{ id: Game.KK, uuid: CameraTargetPlugin.KkUuid, deps: [BepInExPlugin.KkUuid] }],
       lang: this.#lang,
-      uuidEntity: this.#uuidEntity,
       nodes: [this.#placer, resolver, mover],
-    };
-
-    this.#builder.addPlugin(info);
+    });
   }
 
   #lang: Lang;
   #placer: GitPlacer;
   #builder: PackageBuilder;
-  #uuidEntity: string;
 }
 
 export class CardImportPlugin implements IPackage {
@@ -181,7 +163,36 @@ export class CardImportPlugin implements IPackage {
     return "e3b8d8ad-859a-4f18-a5aa-79b9c84967ad";
   }
 
-  Use() {}
+  use() {
+    return [this.addForEc()];
+  }
+
+  private addForEc() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/CardImport/CardImport.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/CardImport.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/CardImport.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.EC, uuid: CardImportPlugin.EcUuid, deps: [BepInExPlugin.EcUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
 
   constructor(info: IParams) {
     this.#builder = info.builder;
@@ -190,14 +201,12 @@ export class CardImportPlugin implements IPackage {
       name: "CardImport",
       desc: "Prevents the game from crashing or stripping some modded data when importing KK cards",
     });
-    this.#uuidEntity = info.uuidEntity;
     this.#placer = info.placer;
   }
 
   #lang: Lang;
   #placer: GitPlacer;
   #builder: PackageBuilder;
-  #uuidEntity: string;
 }
 
 export class CharacterListOptimizationsPlugin implements IPackage {
@@ -205,7 +214,36 @@ export class CharacterListOptimizationsPlugin implements IPackage {
     return "bc673230-b4dc-432a-a677-1519826eee7c";
   }
 
-  Use() {}
+  use() {
+    return [this.addForKk()];
+  }
+
+  private addForKk() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/KK_Fix_CharacterListOptimizations/KK_Fix_CharacterListOptimizations.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_CharacterListOptimizations.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_CharacterListOptimizations.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.KK, uuid: CharacterListOptimizationsPlugin.KkUuid, deps: [BepInExPlugin.KkUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
 
   constructor(info: IParams) {
     this.#builder = info.builder;
@@ -214,14 +252,12 @@ export class CharacterListOptimizationsPlugin implements IPackage {
       name: "CharacterListOptimizations",
       desc: "Makes character lists load faster",
     });
-    this.#uuidEntity = info.uuidEntity;
     this.#placer = info.placer;
   }
 
   #lang: Lang;
   #placer: GitPlacer;
   #builder: PackageBuilder;
-  #uuidEntity: string;
 }
 
 export class CenteredHSceneCursorPlugin implements IPackage {
@@ -229,7 +265,9 @@ export class CenteredHSceneCursorPlugin implements IPackage {
     return "968da95f-973a-4da5-a3bf-5fda73bea847";
   }
 
-  Use() {}
+  use() {
+    return [this.addForKk()];
+  }
 
   constructor(info: IParams) {
     this.#builder = info.builder;
@@ -238,14 +276,39 @@ export class CenteredHSceneCursorPlugin implements IPackage {
       name: "CenteredHSceneCursor",
       desc: "Fixes the cursor texture not being properly centeres in H scenes, so it's easier to click on things",
     });
-    this.#uuidEntity = info.uuidEntity;
     this.#placer = info.placer;
+  }
+
+  private addForKk() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/KK_Fix_CenteredHSceneCursor/KK_Fix_CenteredHSceneCursor.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_CenteredHSceneCursor.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_CenteredHSceneCursor.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.KK, uuid: CenteredHSceneCursorPlugin.KkUuid, deps: [BepInExPlugin.KkUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
   }
 
   #lang: Lang;
   #placer: GitPlacer;
   #builder: PackageBuilder;
-  #uuidEntity: string;
 }
 
 export class DownloadRenamerPlugin implements IPackage {
@@ -253,7 +316,36 @@ export class DownloadRenamerPlugin implements IPackage {
     return "4ed48b00-cd3d-4f9d-9bb2-b6c66201b275";
   }
 
-  Use() {}
+  use() {
+    return [this.addForEc()];
+  }
+
+  private addForEc() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/EC_Fix_DownloadRenamer/EC_Fix_DownloadRenamer.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_DownloadRenamer.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_DownloadRenamer.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.EC, uuid: DownloadRenamerPlugin.EcUuid, deps: [BepInExPlugin.EcUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
 
   constructor(info: IParams) {
     this.#builder = info.builder;
@@ -263,14 +355,12 @@ export class DownloadRenamerPlugin implements IPackage {
       desc:
         "Maps, scenes, poses, and characters downloaded in game will have their file names changed to match the ones on the Illusion website",
     });
-    this.#uuidEntity = info.uuidEntity;
     this.#placer = info.placer;
   }
 
   #lang: Lang;
   #placer: GitPlacer;
   #builder: PackageBuilder;
-  #uuidEntity: string;
 }
 
 export class ExpandShaderDropdownPlugin implements IPackage {
@@ -282,7 +372,64 @@ export class ExpandShaderDropdownPlugin implements IPackage {
     return "2b2ebadc-1334-4fab-a9ae-864de161b450";
   }
 
-  Use() {}
+  use() {
+    this.addForKk();
+    this.addForEc();
+  }
+
+  private addForKk() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/KK_fix_ExpandShaderDropdown/KK_Fix_ExpandShaderDropdown.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_ExpandShaderDropdown.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_ExpandShaderDropdown.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.KK, uuid: ExpandShaderDropdownPlugin.KkUuid, deps: [BepInExPlugin.KkUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
+
+  private addForEc() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/EC_Fix_ExpandShaderDropdown/EC_Fix_ExpandShaderDropdown.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_ExpandShaderDropdown.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_ExpandShaderDropdown.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.EC, uuid: ExpandShaderDropdownPlugin.EcUuid, deps: [BepInExPlugin.EcUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
 
   constructor(info: IParams) {
     this.#builder = info.builder;
@@ -292,14 +439,12 @@ export class ExpandShaderDropdownPlugin implements IPackage {
       desc:
         "Makes the shader drop down menu extend down instaed of up and expands it. Necessary to select modded shaders since they run off the screen by default",
     });
-    this.#uuidEntity = info.uuidEntity;
     this.#placer = info.placer;
   }
 
   #lang: Lang;
   #placer: GitPlacer;
   #builder: PackageBuilder;
-  #uuidEntity: string;
 }
 
 export class HeterochromiaFixPlugin implements IPackage {
@@ -311,7 +456,64 @@ export class HeterochromiaFixPlugin implements IPackage {
     return "7d2232e9-1a5e-4cad-8e96-409d2a076ec4";
   }
 
-  Use() {}
+  use() {
+    this.addForKk();
+    this.addForEc();
+  }
+
+  private addForKk() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/KK_Fix_HeterochromiaFix/KK_Fix_Heterochromia.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_Heterochromia.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_Heterochromia.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.KK, uuid: HeterochromiaFixPlugin.KkUuid, deps: [BepInExPlugin.KkUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
+
+  private addForEc() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/EC_Fix_HeterochromiaFix/EC_Fix_Heterochromia.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_Heterochromia.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_Heterochromia.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.EC, uuid: HeterochromiaFixPlugin.EcUuid, deps: [BepInExPlugin.EcUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
 
   constructor(info: IParams) {
     this.#builder = info.builder;
@@ -320,14 +522,12 @@ export class HeterochromiaFixPlugin implements IPackage {
       name: "HeterochromiaFix",
       desc: "Allows you to load characters with different iris types without them being reset",
     });
-    this.#uuidEntity = info.uuidEntity;
     this.#placer = info.placer;
   }
 
   #lang: Lang;
   #placer: GitPlacer;
   #builder: PackageBuilder;
-  #uuidEntity: string;
 }
 
 export class InvalidSceneFileProtectionPlugin implements IPackage {
@@ -339,7 +539,96 @@ export class InvalidSceneFileProtectionPlugin implements IPackage {
     return "bd620c3d-2d68-4ad6-96bd-7334c8c28225";
   }
 
-  Use() {}
+  static get Hs2Uuid() {
+    return "ee7da67d-c3dc-405e-8397-25e74a27c4c4";
+  }
+
+  use() {
+    this.addForKk();
+    this.addForAi();
+    this.addForHs2();
+  }
+
+  private addForKk() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/KK_Fix_InvalidSceneFileProtection/KK_Fix_InvalidSceneFileProtection.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_InvalidSceneFileProtection.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_InvalidSceneFileProtection.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.KK, uuid: InvalidSceneFileProtectionPlugin.KkUuid, deps: [BepInExPlugin.KkUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
+
+  private addForHs2() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/HS2_Fix_InvalidSceneFileProtection/HS2_Fix_InvalidSceneFileProtection.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/HS2_Fix_InvalidSceneFileProtection.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/HS2_Fix_InvalidSceneFileProtection.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.HS2, uuid: InvalidSceneFileProtectionPlugin.Hs2Uuid, deps: [BepInExPlugin.Hs2Uuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
+
+  private addForAi() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/AI_Fix_InvalidSceneFileProtection/AI_Fix_InvalidSceneFileProtection.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_InvalidSceneFileProtection.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_InvalidSceneFileProtection.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.AI, uuid: InvalidSceneFileProtectionPlugin.AiUuid, deps: [BepInExPlugin.AiUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
 
   constructor(info: IParams) {
     this.#builder = info.builder;
@@ -349,51 +638,139 @@ export class InvalidSceneFileProtectionPlugin implements IPackage {
       desc:
         "Adds error handling to scene loading and importing. If a scene is invalid or from the wrong game version then a message is shown and the studio doesn't crash",
     });
-    this.#uuidEntity = info.uuidEntity;
     this.#placer = info.placer;
   }
 
   #lang: Lang;
   #placer: GitPlacer;
   #builder: PackageBuilder;
-  #uuidEntity: string;
 }
 
-export class LoadingFixesPlugin implements IPackage {
-  static get AiUuid() {
-    return "4e530ca2-3b9f-48ae-aac5-9f7977dd378f";
-  }
+// export class LoadingFixesPlugin implements IPackage {
+//   static get AiUuid() {
+//     return "4e530ca2-3b9f-48ae-aac5-9f7977dd378f";
+//   }
 
-  static get Hs2Uuid() {
-    return "cd7e8a35-6972-44f3-84d6-c6e80df21ae4";
-  }
+//   static get Hs2Uuid() {
+//     return "cd7e8a35-6972-44f3-84d6-c6e80df21ae4";
+//   }
 
-  Use() {}
+//   Use() {
+//     this.addForAi();
+//     this.addForHs2();
+//   }
 
-  constructor(info: IParams) {
-    this.#builder = info.builder;
-    this.#lang = info.builder.lang({
-      uuid: "03019556-69a6-4cde-87d8-251cf8d565f3",
-      name: "LoadingFixes",
-      desc:
-        "Fixes some studio scenes failing to load (sometimes you can't load the scene you've just saved with the stock game, many scenes on uploader are like this). Also fixes color picker breaking in maker because of a similar issue",
-    });
-    this.#uuidEntity = info.uuidEntity;
-    this.#placer = info.placer;
-  }
+//   private addForAi() {
+//     const resolver = new VSResolver({
+//       dir: "/",
+//       build: [
+//         new VSProjectResolver({
+//           file: "src/AI_Fix_LoadingFixes/AI_Fix_LoadingFixes.csproj",
+//           ignore: [],
+//         }),
+//       ],
+//     });
 
-  #lang: Lang;
-  #placer: GitPlacer;
-  #builder: PackageBuilder;
-  #uuidEntity: string;
-}
+//     const mover = new FileMover({
+//       files: [
+//         {
+//           src: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_LoadingFixes.dll",
+//           dst: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_LoadingFixes.dll",
+//         },
+//       ],
+//     });
+
+//     this.#builder.use({//       games: [{ id: Game.AI, uuid: LoadingFixesPlugin.AiUuid, deps: [BepInExPlugin.AiUuid] }],
+//       lang: this.#lang,
+//       uuidEntity: this.#uuidEntity,
+// });
+//     };
+
+//     this.#builder.addPlugin(info);
+//   }
+
+//   private addForHs2() {
+//     const resolver = new VSResolver({
+//       dir: "/",
+//       build: [
+//         new VSProjectResolver({
+//           file: "src/HS2_Fix_LoadingFixes/HS2_Fix_LoadingFixes.csproj",
+//           ignore: [],
+//         }),
+//       ],
+//     });
+
+//     const mover = new FileMover({
+//       files: [
+//         {
+//           src: "bin/BepInEx/plugins/IllusionFixes/HS2_Fix_LoadingFixes.dll",
+//           dst: "bin/BepInEx/plugins/IllusionFixes/HS2_Fix_LoadingFixes.dll",
+//         },
+//       ],
+//     });
+
+//     this.#builder.use({//       games: [{ id: Game.HS2, uuid: LoadingFixesPlugin.Hs2Uuid, deps: [BepInExPlugin.Hs2Uuid] }],
+//       lang: this.#lang,
+//       uuidEntity: this.#uuidEntity,
+// });
+//     };
+
+//     this.#builder.addPlugin(info);
+//   }
+
+//   constructor(info: IParams) {
+//     this.#builder = info.builder;
+//     this.#lang = info.builder.lang({
+//       uuid: "03019556-69a6-4cde-87d8-251cf8d565f3",
+//       name: "LoadingFixes",
+//       desc:
+//         "Fixes some studio scenes failing to load (sometimes you can't load the scene you've just saved with the stock game, many scenes on uploader are like this). Also fixes color picker breaking in maker because of a similar issue",
+//     });
+//     this.#uuidEntity = info.uuidEntity;
+//     this.#placer = info.placer;
+//   }
+
+//   #lang: Lang;
+//   #placer: GitPlacer;
+//   #builder: PackageBuilder;
+//   #uuidEntity: string;
+// }
 
 export class MainGameOptimizationsPlugin implements IPackage {
   static get KkUuid() {
     return "07487c55-0f8e-403f-af0c-8b4b2866ce99";
   }
 
-  Use() {}
+  use() {
+    this.addForKk();
+  }
+
+  private addForKk() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/KK_Fix_MainGameOptimizations/KK_Fix_MainGameOptimizations.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_MainGameOptimizations.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_MainGameOptimizations.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.KK, uuid: MainGameOptimizationsPlugin.KkUuid, deps: [BepInExPlugin.KkUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
 
   constructor(info: IParams) {
     this.#builder = info.builder;
@@ -402,14 +779,12 @@ export class MainGameOptimizationsPlugin implements IPackage {
       name: "MainGameOptimizations",
       desc: "Multiple performance optimizations for the story mode. Aimed to reduce stutter and random FPS drops",
     });
-    this.#uuidEntity = info.uuidEntity;
     this.#placer = info.placer;
   }
 
   #lang: Lang;
   #placer: GitPlacer;
   #builder: PackageBuilder;
-  #uuidEntity: string;
 }
 
 export class MakerOptimizationsPlugin implements IPackage {
@@ -421,7 +796,64 @@ export class MakerOptimizationsPlugin implements IPackage {
     return "b86cb746-1e37-4fbd-aade-9c9605f2fd06";
   }
 
-  Use() {}
+  use() {
+    this.addForKk();
+    this.addForEc();
+  }
+
+  private addForKk() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/KK_Fix_MakerOptimizations/KK_Fix_MakerOptimizations.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_MakerOptimizations.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_MakerOptimizations.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.KK, uuid: MakerOptimizationsPlugin.KkUuid, deps: [BepInExPlugin.KkUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
+
+  private addForEc() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/EC_Fix_MakerOptimizations/EC_Fix_MakerOptimizations.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_MakerOptimizations.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_MakerOptimizations.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.EC, uuid: MakerOptimizationsPlugin.EcUuid, deps: [BepInExPlugin.EcUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
 
   constructor(info: IParams) {
     this.#builder = info.builder;
@@ -431,14 +863,12 @@ export class MakerOptimizationsPlugin implements IPackage {
       desc:
         "Multiple performance optimizations for the character maker. Can greatly increase FPSMultiple performance optimizations for the character maker. Can greatly increase FPS, makes turning on/off the interface in maker by pressing space much faster (after the 1st press), and more",
     });
-    this.#uuidEntity = info.uuidEntity;
     this.#placer = info.placer;
   }
 
   #lang: Lang;
   #placer: GitPlacer;
   #builder: PackageBuilder;
-  #uuidEntity: string;
 }
 
 export class ManifestCorrectorPlugin implements IPackage {
@@ -458,7 +888,120 @@ export class ManifestCorrectorPlugin implements IPackage {
     return "0535f94b-6f47-4b61-8c09-942c33eb4c60";
   }
 
-  Use() {}
+  use() {
+    this.addForKk();
+    this.addForAi();
+    this.addForHs2();
+    this.addForEc();
+  }
+
+  private addForKk() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/KK_Fix_Fix_ManifestCorrector/KK_Fix_Fix_ManifestCorrector.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_Fix_ManifestCorrector.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_Fix_ManifestCorrector.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.KK, uuid: ManifestCorrectorPlugin.KkUuid, deps: [BepInExPlugin.KkUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
+
+  private addForAi() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/AI_Fix_Fix_ManifestCorrector/AI_Fix_Fix_ManifestCorrector.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_Fix_ManifestCorrector.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_Fix_ManifestCorrector.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.AI, uuid: ManifestCorrectorPlugin.AiUuid, deps: [BepInExPlugin.AiUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
+
+  private addForHs2() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/HS2_Fix_ManifestCorrector/HS2_Fix_ManifestCorrector.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/HS2_Fix_ManifestCorrector.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/HS2_Fix_ManifestCorrector.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.HS2, uuid: ManifestCorrectorPlugin.Hs2Uuid, deps: [BepInExPlugin.Hs2Uuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
+
+  private addForEc() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/EC_Fix_ManifestCorrector/EC_Fix_ManifestCorrector.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_ManifestCorrector.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_ManifestCorrector.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.EC, uuid: ManifestCorrectorPlugin.EcUuid, deps: [BepInExPlugin.EcUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
 
   constructor(info: IParams) {
     this.#builder = info.builder;
@@ -468,14 +1011,12 @@ export class ManifestCorrectorPlugin implements IPackage {
       desc:
         "Prevents mods that use incorrect data in the MainManifest column of item lists from locking up the game in story mode",
     });
-    this.#uuidEntity = info.uuidEntity;
     this.#placer = info.placer;
   }
 
   #lang: Lang;
   #placer: GitPlacer;
   #builder: PackageBuilder;
-  #uuidEntity: string;
 }
 
 export class ModdedHeadEyelinerPlugin implements IPackage {
@@ -483,7 +1024,68 @@ export class ModdedHeadEyelinerPlugin implements IPackage {
     return "d6299980-c577-4df2-b810-5371cbfcdab2";
   }
 
-  Use() {}
+  static get EcUuid() {
+    return "75384213-5262-4cda-9ea3-78db83161f2c";
+  }
+
+  use() {
+    this.addForKk();
+    this.addForEc();
+  }
+
+  private addForKk() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/KK_Fix_ModdedHeadEyeliner/KK_Fix_ModdedHeadEyeliner.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_ModdedHeadEyeliner.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_ModdedHeadEyeliner.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.KK, uuid: ModdedHeadEyelinerPlugin.KkUuid, deps: [BepInExPlugin.KkUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
+
+  private addForEc() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/EC_Fix_ModdedHeadEyeliner/EC_Fix_ModdedHeadEyeliner.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_ModdedHeadEyeliner.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_ModdedHeadEyeliner.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.EC, uuid: ModdedHeadEyelinerPlugin.EcUuid, deps: [BepInExPlugin.EcUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
 
   constructor(info: IParams) {
     this.#builder = info.builder;
@@ -492,14 +1094,12 @@ export class ModdedHeadEyelinerPlugin implements IPackage {
       name: "ModdedHeadEyeliner",
       desc: "Fixes modded head eyeliners not working on other head types than default",
     });
-    this.#uuidEntity = info.uuidEntity;
     this.#placer = info.placer;
   }
 
   #lang: Lang;
   #placer: GitPlacer;
   #builder: PackageBuilder;
-  #uuidEntity: string;
 }
 
 export class NewGameShowAllCardsPlugin implements IPackage {
@@ -507,7 +1107,32 @@ export class NewGameShowAllCardsPlugin implements IPackage {
     return "c3f88bc2-1e74-4ca1-811f-4d55fb0ed2e6";
   }
 
-  Use() {}
+  use() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/AI_Fix_NewGameShowAllCards/AI_Fix_NewGameShowAllCards.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_NewGameShowAllCards.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_NewGameShowAllCards.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.AI, uuid: NewGameShowAllCardsPlugin.AiUuid, deps: [BepInExPlugin.AiUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
 
   constructor(info: IParams) {
     this.#builder = info.builder;
@@ -517,14 +1142,12 @@ export class NewGameShowAllCardsPlugin implements IPackage {
       desc:
         "Fixes downloaded character cards not appearing in the New Game character selection (so you don't have to go to maker and re-save them)",
     });
-    this.#uuidEntity = info.uuidEntity;
     this.#placer = info.placer;
   }
 
   #lang: Lang;
   #placer: GitPlacer;
   #builder: PackageBuilder;
-  #uuidEntity: string;
 }
 
 export class NodeEditorUnlockPlugin implements IPackage {
@@ -532,7 +1155,32 @@ export class NodeEditorUnlockPlugin implements IPackage {
     return "2809ac1b-4ff5-432c-b8b0-ac9932be1810";
   }
 
-  Use() {}
+  use() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/EC_Fix_NodeUnlock/EC_Fix_NodeUnlock.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_NodeUnlock.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_NodeUnlock.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.EC, uuid: NodeEditorUnlockPlugin.EcUuid, deps: [BepInExPlugin.EcUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
 
   constructor(info: IParams) {
     this.#builder = info.builder;
@@ -541,14 +1189,12 @@ export class NodeEditorUnlockPlugin implements IPackage {
       name: "NodeEditorUnlock",
       desc: "",
     });
-    this.#uuidEntity = info.uuidEntity;
     this.#placer = info.placer;
   }
 
   #lang: Lang;
   #placer: GitPlacer;
   #builder: PackageBuilder;
-  #uuidEntity: string;
 }
 
 export class NullChecksPlugin implements IPackage {
@@ -568,7 +1214,120 @@ export class NullChecksPlugin implements IPackage {
     return "50f9edd7-efef-4ffc-925b-8a0ac893e924";
   }
 
-  Use() {}
+  use() {
+    this.addForKk();
+    this.addForAi();
+    this.addForHs2();
+    this.addForEc();
+  }
+
+  private addForKk() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/KK_Fix_NullChecks/KK_Fix_NullChecks.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_NullChecks.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_NullChecks.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.KK, uuid: NullChecksPlugin.KkUuid, deps: [BepInExPlugin.KkUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
+
+  private addForAi() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/AI_Fix_NullChecks/AI_Fix_NullChecks.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_NullChecks.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_NullChecks.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.AI, uuid: NullChecksPlugin.AiUuid, deps: [BepInExPlugin.AiUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
+
+  private addForHs2() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/HS2_Fix_NullChecks/HS2_Fix_NullChecks.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/HS2_Fix_NullChecks.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/HS2_Fix_NullChecks.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.HS2, uuid: NullChecksPlugin.Hs2Uuid, deps: [BepInExPlugin.Hs2Uuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
+
+  private addForEc() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/EC_Fix_NullChecks/EC_Fix_NullChecks.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_NullChecks.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_NullChecks.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.EC, uuid: NullChecksPlugin.EcUuid, deps: [BepInExPlugin.EcUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
 
   constructor(info: IParams) {
     this.#builder = info.builder;
@@ -577,14 +1336,12 @@ export class NullChecksPlugin implements IPackage {
       name: "NullChecks",
       desc: "Fixes for some questionably made mods causing issues",
     });
-    this.#uuidEntity = info.uuidEntity;
     this.#placer = info.placer;
   }
 
   #lang: Lang;
   #placer: GitPlacer;
   #builder: PackageBuilder;
-  #uuidEntity: string;
 }
 
 export class PartyCardCompatibilityPlugin implements IPackage {
@@ -592,7 +1349,68 @@ export class PartyCardCompatibilityPlugin implements IPackage {
     return "5c6f748d-ff7b-4596-8d43-89816690f1ba";
   }
 
-  Use() {}
+  static get EcUuid() {
+    return "dd589831-bfc8-426f-ac61-fb3ba6856d9a";
+  }
+
+  use() {
+    this.addForKk();
+    this.addForEc();
+  }
+
+  private addForKk() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/KK_Fix_PartyCardCompatibility/KK_Fix_PartyCardCompatibility.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_PartyCardCompatibility.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_PartyCardCompatibility.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.KK, uuid: PartyCardCompatibilityPlugin.KkUuid, deps: [BepInExPlugin.KkUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
+
+  private addForEc() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/EC_Fix_PartyCardCompatibility/EC_Fix_PartyCardCompatibility.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_PartyCardCompatibility.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_PartyCardCompatibility.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.EC, uuid: PartyCardCompatibilityPlugin.EcUuid, deps: [BepInExPlugin.EcUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
 
   constructor(info: IParams) {
     this.#builder = info.builder;
@@ -601,14 +1419,12 @@ export class PartyCardCompatibilityPlugin implements IPackage {
       name: "PartyCardCompatibility",
       desc: "Allows loading of cards saved in Koikatsu Party (Steam release) in Koikatu and Studio",
     });
-    this.#uuidEntity = info.uuidEntity;
     this.#placer = info.placer;
   }
 
   #lang: Lang;
   #placer: GitPlacer;
   #builder: PackageBuilder;
-  #uuidEntity: string;
 }
 
 export class PersonalityCorrectorPlugin implements IPackage {
@@ -616,7 +1432,36 @@ export class PersonalityCorrectorPlugin implements IPackage {
     return "a56cbe02-6ecb-428d-acf5-ab35e1bc200e";
   }
 
-  Use() {}
+  use() {
+    this.addForKk();
+  }
+
+  private addForKk() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/KK_Fix_PersonalityCorrector/KK_Fix_PersonalityCorrector.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_PersonalityCorrector.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_PersonalityCorrector.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.KK, uuid: PersonalityCorrectorPlugin.KkUuid, deps: [BepInExPlugin.KkUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
 
   constructor(info: IParams) {
     this.#builder = info.builder;
@@ -626,14 +1471,12 @@ export class PersonalityCorrectorPlugin implements IPackage {
       desc:
         "Prevents cards with invalid or missing personalities from crashing the game. A default personality is set instead",
     });
-    this.#uuidEntity = info.uuidEntity;
     this.#placer = info.placer;
   }
 
   #lang: Lang;
   #placer: GitPlacer;
   #builder: PackageBuilder;
-  #uuidEntity: string;
 }
 
 export class PoseLoadPlugin implements IPackage {
@@ -649,7 +1492,92 @@ export class PoseLoadPlugin implements IPackage {
     return "0fddb29c-d877-4f99-a9ca-38975494483a";
   }
 
-  Use() {}
+  use() {
+    this.addForKk();
+    this.addForAi();
+    this.addForHs2();
+  }
+
+  private addForKk() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/KK_Fix_PoseLoad/KK_Fix_PoseLoad.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_PoseLoad.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_PoseLoad.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.KK, uuid: PoseLoadPlugin.KkUuid, deps: [BepInExPlugin.KkUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
+
+  private addForAi() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/AI_Fix_PoseLoad/AI_Fix_PoseLoad.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_PoseLoad.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_PoseLoad.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.AI, uuid: PoseLoadPlugin.AiUuid, deps: [BepInExPlugin.AiUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
+
+  private addForHs2() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/HS2_Fix_PoseLoad/HS2_Fix_PoseLoad.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/HS2_Fix_PoseLoad.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/HS2_Fix_PoseLoad.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.HS2, uuid: PoseLoadPlugin.Hs2Uuid, deps: [BepInExPlugin.Hs2Uuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
 
   constructor(info: IParams) {
     this.#builder = info.builder;
@@ -658,14 +1586,12 @@ export class PoseLoadPlugin implements IPackage {
       name: "PoseLoad",
       desc: "Corrects Honey Select poses loaded in Koikatsu and prevents errors",
     });
-    this.#uuidEntity = info.uuidEntity;
     this.#placer = info.placer;
   }
 
   #lang: Lang;
   #placer: GitPlacer;
   #builder: PackageBuilder;
-  #uuidEntity: string;
 }
 
 export class ResourceUnloadOptimizationsPlugin implements IPackage {
@@ -693,7 +1619,176 @@ export class ResourceUnloadOptimizationsPlugin implements IPackage {
     return "02e2e5bc-0a83-4127-901f-c304825bae95";
   }
 
-  Use() {}
+  use() {
+    this.addForKk();
+    this.addForAi();
+    this.addForHs1();
+    this.addForHs2();
+    this.addForPh();
+    this.addForEc();
+  }
+
+  private addForKk() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/KK_Fix_ResourceUnloadOptimizations/KK_Fix_ResourceUnloadOptimizations.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_ResourceUnloadOptimizations.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_ResourceUnloadOptimizations.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.KK, uuid: ResourceUnloadOptimizationsPlugin.KkUuid, deps: [BepInExPlugin.KkUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
+
+  private addForAi() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/AI_Fix_ResourceUnloadOptimizations/AI_Fix_ResourceUnloadOptimizations.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_ResourceUnloadOptimizations.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_ResourceUnloadOptimizations.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.AI, uuid: ResourceUnloadOptimizationsPlugin.AiUuid, deps: [BepInExPlugin.AiUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
+
+  private addForHs1() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/HS_Fix_ResourceUnloadOptimizations/HS_Fix_ResourceUnloadOptimizations.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/HS_Fix_ResourceUnloadOptimizations.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/HS_Fix_ResourceUnloadOptimizations.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.HS1, uuid: ResourceUnloadOptimizationsPlugin.Hs1Uuid, deps: [BepInExPlugin.Hs1Uuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
+
+  private addForHs2() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/HS2_Fix_ResourceUnloadOptimizations/HS2_Fix_ResourceUnloadOptimizations.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/HS2_Fix_ResourceUnloadOptimizations.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/HS2_Fix_ResourceUnloadOptimizations.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.HS2, uuid: ResourceUnloadOptimizationsPlugin.Hs2Uuid, deps: [BepInExPlugin.Hs2Uuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
+
+  private addForPh() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/PH_Fix_ResourceUnloadOptimizations/PH_Fix_ResourceUnloadOptimizations.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/PH_Fix_ResourceUnloadOptimizations.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/PH_Fix_ResourceUnloadOptimizations.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.PH, uuid: ResourceUnloadOptimizationsPlugin.PhUuid, deps: [BepInExPlugin.PhUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
+
+  private addForEc() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/EC_Fix_ResourceUnloadOptimizations/EC_Fix_ResourceUnloadOptimizations.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_ResourceUnloadOptimizations.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_ResourceUnloadOptimizations.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.EC, uuid: ResourceUnloadOptimizationsPlugin.EcUuid, deps: [BepInExPlugin.EcUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
 
   constructor(info: IParams) {
     this.#builder = info.builder;
@@ -702,14 +1797,12 @@ export class ResourceUnloadOptimizationsPlugin implements IPackage {
       name: "ResourceUnloadOptimizations",
       desc: 'Improves loading times and eliminates stutter after loading was "finished"',
     });
-    this.#uuidEntity = info.uuidEntity;
     this.#placer = info.placer;
   }
 
   #lang: Lang;
   #placer: GitPlacer;
   #builder: PackageBuilder;
-  #uuidEntity: string;
 }
 
 export class SettingsVerifierPlugin implements IPackage {
@@ -725,7 +1818,156 @@ export class SettingsVerifierPlugin implements IPackage {
     return "692e4415-0ac2-47e0-91de-092a1ea822c9";
   }
 
-  Use() {}
+  static get PhUuid() {
+    return "49645d62-920d-4a2e-9895-d78a7fcb5ce6";
+  }
+
+  static get EcUuid() {
+    return "e08af5e6-3eaf-4d10-ada3-f291dbb198a6";
+  }
+
+  use() {
+    this.addForKk();
+    this.addForAi();
+    this.addForHs2();
+    this.addForPh();
+    this.addForEc();
+  }
+
+  private addForKk() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/KK_Fix_SettingsVerifier/KK_Fix_SettingsVerifier.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_SettingsVerifier.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_SettingsVerifier.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.KK, uuid: SettingsVerifierPlugin.KkUuid, deps: [BepInExPlugin.KkUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
+
+  private addForAi() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/AI_Fix_SettingsVerifier/AI_Fix_SettingsVerifier.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_SettingsVerifier.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_SettingsVerifier.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.AI, uuid: SettingsVerifierPlugin.AiUuid, deps: [BepInExPlugin.AiUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
+
+  private addForHs2() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/HS2_Fix_SettingsVerifier/HS2_Fix_SettingsVerifier.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/HS2_Fix_SettingsVerifier.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/HS2_Fix_SettingsVerifier.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.HS2, uuid: SettingsVerifierPlugin.Hs2Uuid, deps: [BepInExPlugin.Hs2Uuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
+
+  private addForPh() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/PH_Fix_SettingsVerifier/PH_Fix_SettingsVerifier.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/PH_Fix_SettingsVerifier.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/PH_Fix_SettingsVerifier.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.PH, uuid: SettingsVerifierPlugin.PhUuid, deps: [BepInExPlugin.PhUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
+
+  private addForEc() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/EC_Fix_SettingsVerifier/EC_Fix_SettingsVerifier.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_SettingsVerifier.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_SettingsVerifier.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.EC, uuid: SettingsVerifierPlugin.EcUuid, deps: [BepInExPlugin.EcUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
 
   constructor(info: IParams) {
     this.#builder = info.builder;
@@ -735,14 +1977,12 @@ export class SettingsVerifierPlugin implements IPackage {
       desc:
         "Prevents corrupted setting from causing issues and forces studio to use the settings.xml file instead of registry",
     });
-    this.#uuidEntity = info.uuidEntity;
     this.#placer = info.placer;
   }
 
   #lang: Lang;
   #placer: GitPlacer;
   #builder: PackageBuilder;
-  #uuidEntity: string;
 }
 
 export class ShowerAccessoriesPlugin implements IPackage {
@@ -750,7 +1990,32 @@ export class ShowerAccessoriesPlugin implements IPackage {
     return "55a723d7-b3e4-4a00-bece-01dd9a8785aa";
   }
 
-  Use() {}
+  use() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/KK_Fix_ShowerAccessories/KK_Fix_ShowerAccessories.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_ShowerAccessories.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_ShowerAccessories.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.KK, uuid: ShowerAccessoriesPlugin.KkUuid, deps: [BepInExPlugin.KkUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
 
   constructor(info: IParams) {
     this.#builder = info.builder;
@@ -760,14 +2025,12 @@ export class ShowerAccessoriesPlugin implements IPackage {
       desc:
         "Prevents accessories from being removed in shower peeping mode. No more gaping holes in the head when using hair accessories",
     });
-    this.#uuidEntity = info.uuidEntity;
     this.#placer = info.placer;
   }
 
   #lang: Lang;
   #placer: GitPlacer;
   #builder: PackageBuilder;
-  #uuidEntity: string;
 }
 
 export class UnlimitedMapLightsPlugin implements IPackage {
@@ -775,7 +2038,32 @@ export class UnlimitedMapLightsPlugin implements IPackage {
     return "01ade1a0-4d9c-428e-89d6-2ffbfe9a389f";
   }
 
-  Use() {}
+  use() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/KK_Fix_UnlimitedMapLights/KK_Fix_UnlimitedMapLights.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_UnlimitedMapLights.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_UnlimitedMapLights.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.KK, uuid: UnlimitedMapLightsPlugin.KkUuid, deps: [BepInExPlugin.KkUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
 
   constructor(info: IParams) {
     this.#builder = info.builder;
@@ -784,78 +2072,150 @@ export class UnlimitedMapLightsPlugin implements IPackage {
       name: "UnlimitedMapLights",
       desc: "Allows using an unlimited amount of map lights in studio. Not all items support more than 3 lights",
     });
-    this.#uuidEntity = info.uuidEntity;
     this.#placer = info.placer;
   }
 
   #lang: Lang;
   #placer: GitPlacer;
   #builder: PackageBuilder;
-  #uuidEntity: string;
 }
 
-export class PatchSteamReleaseCompatibilityPlugin implements IPackage {
+export class SteamReleaseCompatibilityPath implements IPackage {
   static get AisUuid() {
-    return "";
+    return "18c7e8ab-3cf9-4bfc-b49d-8b85c4bb6ca0";
   }
 
-  Use() {}
+  use() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/AI_Patch_SteamReleaseCompatibility/AI_Patch_SteamReleaseCompatibility.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/AI_Patch_SteamReleaseCompatibility.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/AI_Patch_SteamReleaseCompatibility.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.AIS, uuid: SteamReleaseCompatibilityPath.AisUuid, deps: [BepInExPlugin.AisUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
 
   constructor(info: IParams) {
     this.#builder = info.builder;
     this.#lang = info.builder.lang({
       uuid: "f4bddb9d-308f-4c06-b59a-20d80277ed6c",
-      name: "AI_Patch_SteamReleaseCompatibility",
+      name: "SteamReleaseCompatibility",
       desc: "Allows using plugins made for the Japanese release of the game, and makes it possible to use Studio",
     });
-    this.#uuidEntity = info.uuidEntity;
     this.#placer = info.placer;
   }
 
   #lang: Lang;
   #placer: GitPlacer;
   #builder: PackageBuilder;
-  #uuidEntity: string;
 }
 
-export class PatchLogDespammerPlugin implements IPackage {
+export class LogDespammerPath implements IPackage {
   static get AiUuid() {
     return "759f53ba-7fab-4a14-8553-c8c902616b2b";
   }
 
-  Use() {}
+  use() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/AI_Patch_LogDespammer/AI_Patch_LogDespammer.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/IllusionFixes/AI_Patch_LogDespammer.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/AI_Patch_LogDespammer.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.AI, uuid: LogDespammerPath.AiUuid, deps: [BepInExPlugin.AiUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
 
   constructor(info: IParams) {
     this.#builder = info.builder;
     this.#lang = info.builder.lang({
       uuid: "cde02419-a4ea-428c-b98d-d7efc5bbd272",
-      name: "AI_Patch_LogDespammer",
+      name: "LogDespammerPlugin",
       desc: "",
     });
-    this.#uuidEntity = info.uuidEntity;
     this.#placer = info.placer;
   }
 
   #lang: Lang;
   #placer: GitPlacer;
   #builder: PackageBuilder;
-  #uuidEntity: string;
 }
 
-export class CultureFixPlugin implements IPackage {
+export class CultureFixPath implements IPackage {
   static get EcUuid() {
-    return "";
+    return "094b944c-959e-4055-b8de-6cb5e963e4be";
   }
 
   static get AiUuid() {
-    return "";
+    return "a21eb1a5-7721-4687-8c16-8478229e5fd2";
   }
 
   static get Hs2Uuid() {
-    return "";
+    return "488673d3-e47d-437e-9338-721204413631";
   }
 
-  Use() {}
+  use() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/Patch_CultureFix/Patch_CultureFix.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/patchers/IllusionFixes/Patch_CultureFix.dll",
+          dst: "bin/BepInEx/patchers/IllusionFixes/Patch_CultureFix.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [
+        { id: Game.AI, uuid: CultureFixPath.AiUuid, deps: [BepInExPlugin.AiUuid] },
+        { id: Game.HS2, uuid: CultureFixPath.Hs2Uuid, deps: [BepInExPlugin.Hs2Uuid] },
+      ],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
 
   constructor(info: IParams) {
     this.#builder = info.builder;
@@ -865,22 +2225,45 @@ export class CultureFixPlugin implements IPackage {
       desc:
         "Set process culture to ja-JP, similarly to a locale emulator. Fixes game crashes and lockups on some system locales",
     });
-    this.#uuidEntity = info.uuidEntity;
     this.#placer = info.placer;
   }
 
   #lang: Lang;
   #placer: GitPlacer;
   #builder: PackageBuilder;
-  #uuidEntity: string;
 }
 
-export class MagicCarrotPlugin implements IPackage {
+export class MagicCarrotPath implements IPackage {
   static get AiUuid() {
     return "486dee0e-e431-4587-bb31-88defa2bd372";
   }
 
-  Use() {}
+  use() {
+    const resolver = new VSResolver({
+      dir: "/",
+      build: [
+        new VSProjectResolver({
+          file: "src/Patch_MagicCarrot/.csproj",
+          ignore: [],
+        }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/patchers/IllusionFixes/Patch_MagicCarrot.dll",
+          dst: "bin/BepInEx/patchers/IllusionFixes/Patch_MagicCarrot.dll",
+        },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.AI, uuid: MagicCarrotPath.AiUuid, deps: [BepInExPlugin.AiUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
 
   constructor(info: IParams) {
     this.#builder = info.builder;
@@ -889,258 +2272,68 @@ export class MagicCarrotPlugin implements IPackage {
       name: "MagicCarrot",
       desc: "Prevents the game from locking up when starting",
     });
-    this.#uuidEntity = info.uuidEntity;
     this.#placer = info.placer;
   }
 
   #lang: Lang;
   #placer: GitPlacer;
   #builder: PackageBuilder;
-  #uuidEntity: string;
 }
 
-export class IllusionFixesPlugin implements IPackage {
-  Use() {
+export class IllusionFixesPlugin implements IPackageBuilder {
+  get builder() {
+    return this.#builder;
+  }
+
+  use() {
     for (const pack of this.#packages) {
-      pack.Use();
+      pack.use();
     }
   }
 
-  constructor(builder: PackageBuilder) {
-    const uuidEntity = "62c81393-0655-4034-a999-c049850d8485";
+  constructor() {
+    this.#builder = new PackageBuilder("62c81393-0655-4034-a999-c049850d8485");
     const placer = new GitPlacer({ url: "https://github.com/IllusionMods/IllusionFixes" });
 
     this.#packages.push(
-      new CameraTargetPlugin({ builder, uuidEntity, placer }),
-      new CardImportPlugin({ builder, uuidEntity, placer }),
-      new CharacterListOptimizationsPlugin({ builder, uuidEntity, placer }),
-      new CenteredHSceneCursorPlugin({ builder, uuidEntity, placer }),
-      new DownloadRenamerPlugin({ builder, uuidEntity, placer }),
-      new ExpandShaderDropdownPlugin({ builder, uuidEntity, placer }),
-      new HeterochromiaFixPlugin({ builder, uuidEntity, placer }),
-      new InvalidSceneFileProtectionPlugin({ builder, uuidEntity, placer }),
-      new LoadingFixesPlugin({ builder, uuidEntity, placer }),
-      new MainGameOptimizationsPlugin({ builder, uuidEntity, placer }),
-      new MakerOptimizationsPlugin({ builder, uuidEntity, placer }),
-      new ManifestCorrectorPlugin({ builder, uuidEntity, placer }),
-      new ModdedHeadEyelinerPlugin({ builder, uuidEntity, placer }),
-      new NewGameShowAllCardsPlugin({ builder, uuidEntity, placer }),
-      new NodeEditorUnlockPlugin({ builder, uuidEntity, placer }),
-      new NullChecksPlugin({ builder, uuidEntity, placer }),
-      new PartyCardCompatibilityPlugin({ builder, uuidEntity, placer }),
-      new PersonalityCorrectorPlugin({ builder, uuidEntity, placer }),
-      new PoseLoadPlugin({ builder, uuidEntity, placer }),
-      new ResourceUnloadOptimizationsPlugin({ builder, uuidEntity, placer }),
-      new SettingsVerifierPlugin({ builder, uuidEntity, placer }),
-      new ShowerAccessoriesPlugin({ builder, uuidEntity, placer }),
-      new UnlimitedMapLightsPlugin({ builder, uuidEntity, placer }),
-      new PatchSteamReleaseCompatibilityPlugin({ builder, uuidEntity, placer }),
-      new PatchLogDespammerPlugin({ builder, uuidEntity, placer }),
-      new CultureFixPlugin({ builder, uuidEntity, placer }),
-      new MagicCarrotPlugin({ builder, uuidEntity, placer })
+      new CameraTargetPlugin({ builder: this.builder, placer }),
+      new CardImportPlugin({ builder: this.builder, placer }),
+      new CharacterListOptimizationsPlugin({ builder: this.builder, placer }),
+      new CenteredHSceneCursorPlugin({ builder: this.builder, placer }),
+      new DownloadRenamerPlugin({ builder: this.builder, placer }),
+      new ExpandShaderDropdownPlugin({ builder: this.builder, placer }),
+      new HeterochromiaFixPlugin({ builder: this.builder, placer }),
+      new InvalidSceneFileProtectionPlugin({ builder: this.builder, placer }),
+      // new LoadingFixesPlugin({ builder: this.builder, placer }),
+      new MainGameOptimizationsPlugin({ builder: this.builder, placer }),
+      new MakerOptimizationsPlugin({ builder: this.builder, placer }),
+      new ManifestCorrectorPlugin({ builder: this.builder, placer }),
+      new ModdedHeadEyelinerPlugin({ builder: this.builder, placer }),
+      new NewGameShowAllCardsPlugin({ builder: this.builder, placer }),
+      new NodeEditorUnlockPlugin({ builder: this.builder, placer }),
+      new NullChecksPlugin({ builder: this.builder, placer }),
+      new PartyCardCompatibilityPlugin({ builder: this.builder, placer }),
+      new PersonalityCorrectorPlugin({ builder: this.builder, placer }),
+      new PoseLoadPlugin({ builder: this.builder, placer }),
+      new ResourceUnloadOptimizationsPlugin({ builder: this.builder, placer }),
+      new SettingsVerifierPlugin({ builder: this.builder, placer }),
+      new ShowerAccessoriesPlugin({ builder: this.builder, placer }),
+      new UnlimitedMapLightsPlugin({ builder: this.builder, placer }),
+      new SteamReleaseCompatibilityPath({ builder: this.builder, placer }),
+      new LogDespammerPath({ builder: this.builder, placer }),
+      new CultureFixPath({ builder: this.builder, placer }),
+      new MagicCarrotPath({ builder: this.builder, placer })
     );
   }
 
-  #packages: IPackages = [];
-
-  // private addCardImport() {
-  //   // const lang = this.#builder.lang("CardImport", "Prevents the game from crashing or stripping some modded data when importing KK cards");
-  // }
-
-  // private addCharacterListOptimizations() {
-  //   const lang = this.#builder.lang("CharacterListOptimizations", "Makes character lists load faster");
-  //   this.plugin.addProject(lang, [PluginGameType.KK], PluginResolver.VisualStudio, "KK_Fix_CharacterListOptimizations");
-  // }
-
-  // private addCenteredHSceneCursor() {
-  //   const lang = this.#builder.lang(
-  //     "CenteredHSceneCursor",
-  //     "Fixes the cursor texture not being properly centeres in H scenes, so it's easier to click on things"
-  //   );
-  //   this.plugin.addProject(lang, [PluginGameType.KK], PluginResolver.VisualStudio, "KK_Fix_CenteredHSceneCursor");
-  // }
-
-  // private addDownloadRenamer() {
-  //   // const lang = this.#builder.lang("DownloadRenamer", "Maps, scenes, poses, and characters downloaded in game will have their file names changed to match the ones on the Illusion website");
-  // }
-
-  // private addExpandShaderDropdown() {
-  //   const lang = this.#builder.lang(
-  //     "ExpandShaderDropdown",
-  //     "Makes the shader drop down menu extend down instaed of up and expands it. Necessary to select modded shaders since they run off the screen by default"
-  //   );
-  //   this.plugin.addProject(lang, [PluginGameType.KK], PluginResolver.VisualStudio, "KK_Fix_ExpandShaderDropdown");
-  // }
-
-  // private addHeterochromiaFix() {
-  //   const lang = this.#builder.lang(
-  //     "HeterochromiaFix",
-  //     "Allows you to load characters with different iris types without them being reset"
-  //   );
-  //   this.plugin.addProject(lang, [PluginGameType.KK], PluginResolver.VisualStudio, "KK_Fix_HeterochromiaFix");
-  // }
-
-  // private addInvalidSceneFileProtection() {
-  //   const lang = this.#builder.lang(
-  //     "InvalidSceneFileProtection",
-  //     "Adds error handling to scene loading and importing. If a scene is invalid or from the wrong game version then a message is shown and the studio doesn't crash"
-  //   );
-  //   this.plugin.addProject(lang, [PluginGameType.KK], PluginResolver.VisualStudio, "KK_Fix_InvalidSceneFileProtection");
-  //   this.plugin.addProject(lang, [PluginGameType.AI], PluginResolver.VisualStudio, "AI_Fix_InvalidSceneFileProtection");
-  // }
-
-  // private addLoadingFixes() {
-  //   const lang = this.#builder.lang(
-  //     "LoadingFixes",
-  //     "Fixes some studio scenes failing to load (sometimes you can't load the scene you've just saved with the stock game, many scenes on uploader are like this). Also fixes color picker breaking in maker because of a similar issue"
-  //   );
-  //   this.plugin.addProject(lang, [PluginGameType.AI], PluginResolver.VisualStudio, "AI_Fix_LoadingFixes");
-  //   this.plugin.addProject(lang, [PluginGameType.HS2], PluginResolver.VisualStudio, "HS2_Fix_LoadingFixes");
-  // }
-
-  // private addMainGameOptimizations() {
-  //   const lang = this.#builder.lang(
-  //     "MainGameOptimizations",
-  //     "Multiple performance optimizations for the story mode. Aimed to reduce stutter and random FPS drops"
-  //   );
-  //   this.plugin.addProject(lang, [PluginGameType.KK], PluginResolver.VisualStudio, "KK_Fix_MainGameOptimizations");
-  // }
-
-  // private addMakerOptimizations() {
-  //   const lang = this.#builder.lang(
-  //     "MakerOptimizations",
-  //     "Multiple performance optimizations for the character maker. Can greatly increase FPSMultiple performance optimizations for the character maker. Can greatly increase FPS, makes turning on/off the interface in maker by pressing space much faster (after the 1st press), and more"
-  //   );
-  //   this.plugin.addProject(lang, [PluginGameType.KK], PluginResolver.VisualStudio, "KK_Fix_MakerOptimizations");
-  // }
-
-  // private addManifestCorrector() {
-  //   const lang = this.#builder.lang(
-  //     "ManifestCorrector",
-  //     "Prevents mods that use incorrect data in the MainManifest column of item lists from locking up the game in story mode"
-  //   );
-  //   this.plugin.addProject(lang, [PluginGameType.KK], PluginResolver.VisualStudio, "KK_Fix_ManifestCorrector");
-  //   this.plugin.addProject(lang, [PluginGameType.AI], PluginResolver.VisualStudio, "AI_Fix_ManifestCorrector");
-  //   this.plugin.addProject(lang, [PluginGameType.HS2], PluginResolver.VisualStudio, "HS2_Fix_ManifestCorrector");
-  // }
-
-  // private addModdedHeadEyeliner() {
-  //   const lang = this.#builder.lang(
-  //     "ModdedHeadEyeliner",
-  //     "Fixes modded head eyeliners not working on other head types than default"
-  //   );
-  //   this.plugin.addProject(lang, [PluginGameType.KK], PluginResolver.VisualStudio, "KK_Fix_ModdedHeadEyeliner");
-  // }
-
-  // private addNewGameShowAllCards() {
-  //   const lang = this.#builder.lang(
-  //     "NewGameShowAllCards",
-  //     "Fixes downloaded character cards not appearing in the New Game character selection (so you don't have to go to maker and re-save them)"
-  //   );
-  //   this.plugin.addProject(lang, [PluginGameType.AI], PluginResolver.VisualStudio, "AI_Fix_NewGameShowAllCards");
-  // }
-
-  // private addNodeEditorUnlock() {
-  //   // const lang = this.#builder.lang("NodeEditorUnlock", "");
-  // }
-
-  // private addNullChecks() {
-  //   const lang = this.#builder.lang("NullChecks", "Fixes for some questionably made mods causing issues");
-  //   this.plugin.addProject(lang, [PluginGameType.KK], PluginResolver.VisualStudio, "KK_Fix_NullChecks");
-  //   this.plugin.addProject(lang, [PluginGameType.AI], PluginResolver.VisualStudio, "AI_Fix_NullChecks");
-  //   this.plugin.addProject(lang, [PluginGameType.HS2], PluginResolver.VisualStudio, "HS2_Fix_NullChecks");
-  // }
-
-  // private addPartyCardCompatibility() {
-  //   const lang = this.#builder.lang(
-  //     "PartyCardCompatibility",
-  //     "Allows loading of cards saved in Koikatsu Party (Steam release) in Koikatu and Studio"
-  //   );
-  //   this.plugin.addProject(lang, [PluginGameType.KK], PluginResolver.VisualStudio, "KK_Fix_PartyCardCompatibility");
-  // }
-
-  // private addPersonalityCorrector() {
-  //   const lang = this.#builder.lang(
-  //     "PersonalityCorrector",
-  //     "Prevents cards with invalid or missing personalities from crashing the game. A default personality is set instead"
-  //   );
-  //   this.plugin.addProject(lang, [PluginGameType.KK], PluginResolver.VisualStudio, "KK_Fix_PersonalityCorrector");
-  // }
-
-  // private addPoseLoad() {
-  //   const lang = this.#builder.lang("PoseLoad", "Corrects Honey Select poses loaded in Koikatsu and prevents errors");
-  //   this.plugin.addProject(lang, [PluginGameType.KK], PluginResolver.VisualStudio, "KK_Fix_PoseLoad");
-  //   this.plugin.addProject(lang, [PluginGameType.AI], PluginResolver.VisualStudio, "AI_Fix_PoseLoad");
-  //   this.plugin.addProject(lang, [PluginGameType.HS2], PluginResolver.VisualStudio, "HS2_Fix_PoseLoad");
-  // }
-
-  // private addResourceUnloadOptimizations() {
-  //   const lang = this.#builder.lang(
-  //     "ResourceUnloadOptimizations",
-  //     'Improves loading times and eliminates stutter after loading was "finished"'
-  //   );
-  //   this.plugin.addProject(
-  //     lang,
-  //     [PluginGameType.PH],
-  //     PluginResolver.VisualStudio,
-  //     "PH_Fix_ResourceUnloadOptimizations"
-  //   );
-  //   this.plugin.addProject(
-  //     lang,
-  //     [PluginGameType.KK],
-  //     PluginResolver.VisualStudio,
-  //     "KK_Fix_ResourceUnloadOptimizations"
-  //   );
-  //   this.plugin.addProject(
-  //     lang,
-  //     [PluginGameType.HS1],
-  //     PluginResolver.VisualStudio,
-  //     "HS_Fix_ResourceUnloadOptimizations"
-  //   );
-  //   this.plugin.addProject(
-  //     lang,
-  //     [PluginGameType.AI],
-  //     PluginResolver.VisualStudio,
-  //     "AI_Fix_ResourceUnloadOptimizations"
-  //   );
-  //   this.plugin.addProject(
-  //     lang,
-  //     [PluginGameType.HS2],
-  //     PluginResolver.VisualStudio,
-  //     "HS2_Fix_ResourceUnloadOptimizations"
-  //   );
-  // }
-
-  // private addSettingsVerifier() {
-  //   const lang = this.#builder.lang(
-  //     "SettingsVerifier",
-  //     "Prevents corrupted setting from causing issues and forces studio to use the settings.xml file instead of registry"
-  //   );
-  //   this.plugin.addProject(lang, [PluginGameType.KK], PluginResolver.VisualStudio, "KK_Fix_SettingsVerifier");
-  //   this.plugin.addProject(lang, [PluginGameType.AI], PluginResolver.VisualStudio, "AI_Fix_SettingsVerifier");
-  //   this.plugin.addProject(lang, [PluginGameType.HS2], PluginResolver.VisualStudio, "HS2_Fix_SettingsVerifier");
-  // }
-
-  // private addShowerAccessories() {
-  //   const lang = this.#builder.lang(
-  //     "ShowerAccessories",
-  //     "Prevents accessories from being removed in shower peeping mode. No more gaping holes in the head when using hair accessories"
-  //   );
-  //   this.plugin.addProject(lang, [PluginGameType.KK], PluginResolver.VisualStudio, "KK_Fix_ShowerAccessories");
-  // }
-
-  // private addUnlimitedMapLights() {
-  //   const lang = this.#builder.lang(
-  //     "UnlimitedMapLights",
-  //     "Allows using an unlimited amount of map lights in studio. Not all items support more than 3 lights"
-  //   );
-  //   this.plugin.addProject(lang, [PluginGameType.KK], PluginResolver.VisualStudio, "KK_Fix_UnlimitedMapLights");
-  // }
+  #builder: PackageBuilder;
+  #packages: IPackage[] = [];
 }
 
-export const IllusionFixesPluginAdd = (builder: PackageBuilder) => {
-  const plugin = new IllusionFixesPlugin(builder);
-  plugin.Use();
+export const IllusionFixesPluginAdd = () => {
+  const plugin = new IllusionFixesPlugin();
+  plugin.use();
+  return plugin.builder;
 };
 
 // https://youtu.be/oZ_hW1E3q74?list=RDMMZJ__TExqiQk

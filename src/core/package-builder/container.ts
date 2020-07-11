@@ -8,10 +8,8 @@ export interface IGame {
   deps: string[];
 }
 
-type IGames = IGame[];
-
 export interface IContainer {
-  games: IGames;
+  games: IGame[];
   lang: Lang;
   uuidEntity: string;
   nodes: IBuildable[];
@@ -49,7 +47,7 @@ export class Container {
     this.#nodes = container.nodes;
   }
 
-  #games: IGames;
+  #games: IGame[];
   #lang: Lang;
   #uuidEntity: string;
   #nodes: IBuildable[];

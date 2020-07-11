@@ -43,7 +43,7 @@
 //       ],
 //     });
 
-//     const info: IContainer = {
+//     return {
 //       games: [{ id: Game.HS2, uuid: "4bc31922-a273-4cbb-b0b2-5cb565e58790" }],
 //       lang: this.#lang,
 //       uuidEntity: this.#uuidEntity,
@@ -76,7 +76,7 @@
 //       ],
 //     });
 
-//     const info: IContainer = {
+//     return {
 //       games: [{ id: Game.AI, uuid: "504f6621-0861-4f2f-bf8d-f8ad3d6c3558" }],
 //       lang: this.#lang,
 //       uuidEntity: this.#uuidEntity,

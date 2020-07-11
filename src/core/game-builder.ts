@@ -2,7 +2,6 @@ import { writeFile } from "fs/promises";
 import { join, resolve } from "path";
 
 import { Game } from "./game-builder/game";
-import { IGames } from "./game-builder/types/game";
 import { removeFiles } from "./helpers/remove-helper";
 
 export class GameBuilder {
@@ -35,7 +34,7 @@ export class GameBuilder {
     await writeFile("../illusion-plugin-manager/src/i18n/langs/en/games.json", data);
   }
 
-  #games: IGames = [];
+  #games: Game[] = [];
 
   #apiWorkDir = "../illusion-plugin-fake-api/public";
 }
