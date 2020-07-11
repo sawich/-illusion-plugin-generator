@@ -35,6 +35,7 @@ export class UnlockPlayerHeightPlugin implements IPackageBuilder {
 
   use() {
     this.addForAi();
+    this.addForHs2();
   }
 
   private addForAi() {
@@ -84,7 +85,7 @@ export class UnlockPlayerHeightPlugin implements IPackageBuilder {
     const mover = new FileMover({
       files: [
         {
-          src: "_bin/AI/BepInEx/plugins/2155X/HS2_UnlockPlayerHeight.dll",
+          src: "_bin/HS2/BepInEx/plugins/2155X/HS2_UnlockPlayerHeight.dll",
           dst: "BepInEx/plugins/2155X/HS2_UnlockPlayerHeight.dll",
         },
       ],
