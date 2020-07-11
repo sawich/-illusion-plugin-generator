@@ -31,7 +31,10 @@ export class CameraTargetPlugin implements IPackage {
   }
 
   use() {
-    return [this.addForKk(), this.addForAi(), this.addForHs2(), this.addForPh()];
+    this.addForKk();
+    this.addForAi();
+    this.addForHs2();
+    this.addForPh();
   }
 
   constructor(info: IParams) {
@@ -50,7 +53,7 @@ export class CameraTargetPlugin implements IPackage {
       dir: "/",
       build: [
         new VSProjectResolver({
-          file: "src/KK_Fix_CameraTarget/HS2_Fix_CameraTarget.csproj",
+          file: "src/HS2_Fix_CameraTarget/HS2_Fix_CameraTarget.csproj",
           ignore: [],
         }),
       ],
@@ -77,7 +80,7 @@ export class CameraTargetPlugin implements IPackage {
       dir: "/",
       build: [
         new VSProjectResolver({
-          file: "src/KK_Fix_CameraTarget/AI_Fix_CameraTarget.csproj",
+          file: "src/AI_Fix_CameraTarget/AI_Fix_CameraTarget.csproj",
           ignore: [],
         }),
       ],
@@ -104,7 +107,7 @@ export class CameraTargetPlugin implements IPackage {
       dir: "/",
       build: [
         new VSProjectResolver({
-          file: "src/KK_Fix_CameraTarget/PH_Fix_CameraTarget.csproj",
+          file: "src/PH_Fix_CameraTarget/PH_Fix_CameraTarget.csproj",
           ignore: [],
         }),
       ],
@@ -164,7 +167,7 @@ export class CardImportPlugin implements IPackage {
   }
 
   use() {
-    return [this.addForEc()];
+    this.addForEc();
   }
 
   private addForEc() {
@@ -215,7 +218,7 @@ export class CharacterListOptimizationsPlugin implements IPackage {
   }
 
   use() {
-    return [this.addForKk()];
+    this.addForKk();
   }
 
   private addForKk() {
@@ -266,7 +269,7 @@ export class CenteredHSceneCursorPlugin implements IPackage {
   }
 
   use() {
-    return [this.addForKk()];
+    this.addForKk();
   }
 
   constructor(info: IParams) {
@@ -317,7 +320,7 @@ export class DownloadRenamerPlugin implements IPackage {
   }
 
   use() {
-    return [this.addForEc()];
+    this.addForEc();
   }
 
   private addForEc() {
@@ -466,7 +469,7 @@ export class HeterochromiaFixPlugin implements IPackage {
       dir: "/",
       build: [
         new VSProjectResolver({
-          file: "src/KK_Fix_HeterochromiaFix/KK_Fix_Heterochromia.csproj",
+          file: "src/KK_Fix_Heterochromia/KK_Fix_Heterochromia.csproj",
           ignore: [],
         }),
       ],
@@ -493,7 +496,7 @@ export class HeterochromiaFixPlugin implements IPackage {
       dir: "/",
       build: [
         new VSProjectResolver({
-          file: "src/EC_Fix_HeterochromiaFix/EC_Fix_Heterochromia.csproj",
+          file: "src/EC_Fix_Heterochromia/EC_Fix_Heterochromia.csproj",
           ignore: [],
         }),
       ],
@@ -900,7 +903,7 @@ export class ManifestCorrectorPlugin implements IPackage {
       dir: "/",
       build: [
         new VSProjectResolver({
-          file: "src/KK_Fix_Fix_ManifestCorrector/KK_Fix_Fix_ManifestCorrector.csproj",
+          file: "src/KK_Fix_ManifestCorrector/KK_Fix_ManifestCorrector.csproj",
           ignore: [],
         }),
       ],
@@ -909,8 +912,8 @@ export class ManifestCorrectorPlugin implements IPackage {
     const mover = new FileMover({
       files: [
         {
-          src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_Fix_ManifestCorrector.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_Fix_ManifestCorrector.dll",
+          src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_ManifestCorrector.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_ManifestCorrector.dll",
         },
       ],
     });
@@ -927,7 +930,7 @@ export class ManifestCorrectorPlugin implements IPackage {
       dir: "/",
       build: [
         new VSProjectResolver({
-          file: "src/AI_Fix_Fix_ManifestCorrector/AI_Fix_Fix_ManifestCorrector.csproj",
+          file: "src/AI_Fix_ManifestCorrector/AI_Fix_ManifestCorrector.csproj",
           ignore: [],
         }),
       ],
@@ -936,8 +939,8 @@ export class ManifestCorrectorPlugin implements IPackage {
     const mover = new FileMover({
       files: [
         {
-          src: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_Fix_ManifestCorrector.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_Fix_ManifestCorrector.dll",
+          src: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_ManifestCorrector.dll",
+          dst: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_ManifestCorrector.dll",
         },
       ],
     });
@@ -2201,8 +2204,8 @@ export class CultureFixPath implements IPackage {
     const mover = new FileMover({
       files: [
         {
-          src: "bin/BepInEx/patchers/IllusionFixes/Patch_CultureFix.dll",
-          dst: "bin/BepInEx/patchers/IllusionFixes/Patch_CultureFix.dll",
+          src: "bin/BepInEx/patchers/CultureFix.dll",
+          dst: "bin/BepInEx/patchers/CultureFix.dll",
         },
       ],
     });
@@ -2252,8 +2255,8 @@ export class MagicCarrotPath implements IPackage {
     const mover = new FileMover({
       files: [
         {
-          src: "bin/BepInEx/patchers/IllusionFixes/Patch_MagicCarrot.dll",
-          dst: "bin/BepInEx/patchers/IllusionFixes/Patch_MagicCarrot.dll",
+          src: "bin/BepInEx/patchers/Patch_MagicCarrot.dll",
+          dst: "bin/BepInEx/patchers/Patch_MagicCarrot.dll",
         },
       ],
     });
