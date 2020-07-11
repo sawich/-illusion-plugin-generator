@@ -2,16 +2,20 @@
   "name": "angel-package-generator",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/main.js",
+  "main": "src/main.ts",
   "scripts": {
-    "b": "node --trace-warnings dist/main.js",
-    "c": "tsc",
+    "b": "set NODE-OPTIONS=\"--trace-warnings\" && ts-node -r tsconfig-paths/register src/main.ts",
     "w": "tsc --watch"
   },
   "author": "sawich <sawich@angeldev.org>",
   "license": "ISC",
   "dependencies": {
+    "@types/module-alias": "^2.0.0",
     "@types/node": "^14.0.22",
+    "ts-node": "^8.10.2",
     "typescript": "^3.9.6"
+  },
+  "devDependencies": {
+    "tsconfig-paths": "^3.9.0"
   }
 }

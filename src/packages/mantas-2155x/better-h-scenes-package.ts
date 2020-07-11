@@ -1,11 +1,13 @@
-import { PackageBuilder } from "../core/package-builder";
-import { Lang } from "../core/package-builder/lang";
-import { FileMover } from "../core/package-builder/movers/file-mover";
-import { GitPlacer } from "../core/package-builder/places/git-placer";
-import { VSProjectResolver, VSResolver } from "../core/package-builder/resolvers/vs-resolver";
-import { Game } from "../core/package-builder/types/game";
-import { IPackageBuilder } from "../core/package-builder/types/package";
-import { BepInExPlugin, ConfigurationManagerPlugin } from "./bep-in-ex-package";
+import { PackageBuilder } from "@/core/package-builder";
+import { Lang } from "@/core/package-builder/lang";
+import { FileMover } from "@/core/package-builder/movers/file-mover";
+import { GitPlacer } from "@/core/package-builder/places/git-placer";
+import { VSProjectResolver, VSResolver } from "@/core/package-builder/resolvers/vs-resolver";
+import { Game } from "@/core/package-builder/types/game";
+import { IPackageBuilder } from "@/core/package-builder/types/package";
+
+import { BepInExPlugin } from "../bep-in-ex/bep-in-ex-package";
+import { ConfigurationManagerPlugin } from "../bep-in-ex/configuration-manager-package";
 
 export class BetterHScenesPlugin implements IPackageBuilder {
   static get Hs2Uuid() {

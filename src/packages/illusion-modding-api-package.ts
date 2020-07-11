@@ -1,10 +1,10 @@
-// import { PackageBuilder } from "../core/package-builder";
-// import { IContainer } from "../core/package-builder/container";
-// import { Lang } from "../core/package-builder/lang";
-// import { FileMover } from "../core/package-builder/movers/file-mover";
-// import { GitPlacer } from "../core/package-builder/places/git-placer";
-// import { VSProjectResolver, VSResolver } from "../core/package-builder/resolvers/vs-resolver";
-// import { Game } from "../core/package-builder/types/game";
+// import { PackageBuilder } from "@/core/package-builder";
+// import { IContainer } from "@/core/package-builder/container";
+// import { Lang } from "@/core/package-builder/lang";
+// import { FileMover } from "@/core/package-builder/movers/file-mover";
+// import { GitPlacer } from "@/core/package-builder/places/git-placer";
+// import { VSProjectResolver, VSResolver } from "@/core/package-builder/resolvers/vs-resolver";
+// import { Game } from "@/core/package-builder/types/game";
 
 // class BetterHScenesPlugin implements IPackage {
 //   constructor(builder: PackageBuilder) {

@@ -1,5 +1,4 @@
-import { GameBuilder } from "src/core/game-builder";
-
+import { GameBuilder } from "../core/game-builder";
 import { Game } from "../core/game-builder/game";
 import { Game as GameType } from "../core/package-builder/types/game";
 
