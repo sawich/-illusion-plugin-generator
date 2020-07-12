@@ -4,7 +4,7 @@ import { FileMover } from "@/core/package-builder/movers/file-mover";
 import { GitPlacer } from "@/core/package-builder/places/git-placer";
 import { VSProjectResolver, VSResolver } from "@/core/package-builder/resolvers/vs-resolver";
 import { Game } from "@/core/package-builder/types/game";
-import { IPackage, IPackageBuilder } from "@/core/package-builder/types/package";
+import { IPackageBuilder } from "@/core/package-builder/types/package";
 
 import { BepInExPlugin } from "../bep-in-ex/bep-in-ex-package";
 
@@ -21,6 +21,10 @@ class IllusionBrowserFoldersPlugin implements IPackageBuilder {
     return "66b16a14-4fd9-4fce-9c73-db7b3d74d820";
   }
 
+  static get KksUuid() {
+    return "31ef8af6-bcbe-4dff-90c7-bfaaf185af59";
+  }
+
   get builder() {
     return this.#builder;
   }
@@ -29,6 +33,7 @@ class IllusionBrowserFoldersPlugin implements IPackageBuilder {
     this.addForHs2();
     this.addForAi();
     this.addForKk();
+    this.addForKks();
   }
 
   constructor() {
@@ -101,7 +106,6 @@ class IllusionBrowserFoldersPlugin implements IPackageBuilder {
       build: [
         new VSProjectResolver({ file: "src/KK_FolderBrowser/KK_BrowserFolders.csproj", ignore: [] }),
         new VSProjectResolver({ file: "src/KK_Hooks_KK/KK_BrowserFolders_Hooks_KK.csproj", ignore: [] }),
-        new VSProjectResolver({ file: "src/KK_Hooks_KKP/KK_BrowserFolders_Hooks_KKP.csproj", ignore: [] }),
       ],
     });
 
@@ -115,6 +119,31 @@ class IllusionBrowserFoldersPlugin implements IPackageBuilder {
           src: "bin/BepInEx/plugins/KK_BrowserFolders_Hooks_KK.dll",
           dst: "BepInEx/plugins/KK_BrowserFolders_Hooks_KK.dll",
         },
+      ],
+    });
+
+    this.#builder.use({
+      games: [{ id: Game.KK, uuid: IllusionBrowserFoldersPlugin.KkUuid, deps: [BepInExPlugin.KkUuid] }],
+      lang: this.#lang,
+      nodes: [this.#placer, resolver, mover],
+    });
+  }
+
+  private addForKks() {
+    const resolver = new VSResolver({
+      dir: "/src",
+      build: [
+        new VSProjectResolver({ file: "src/KK_FolderBrowser/KK_BrowserFolders.csproj", ignore: [] }),
+        new VSProjectResolver({ file: "src/KK_Hooks_KKP/KK_BrowserFolders_Hooks_KKP.csproj", ignore: [] }),
+      ],
+    });
+
+    const mover = new FileMover({
+      files: [
+        {
+          src: "bin/BepInEx/plugins/KK_BrowserFolders.dll",
+          dst: "BepInEx/plugins/KK_BrowserFolders.dll",
+        },
         {
           src: "bin/BepInEx/plugins/KK_BrowserFolders_Hooks_KKP.dll",
           dst: "BepInEx/plugins/KK_BrowserFolders_Hooks_KKP.dll",
@@ -123,7 +152,7 @@ class IllusionBrowserFoldersPlugin implements IPackageBuilder {
     });
 
     this.#builder.use({
-      games: [{ id: Game.KK, uuid: IllusionBrowserFoldersPlugin.KkUuid, deps: [BepInExPlugin.KkUuid] }],
+      games: [{ id: Game.KKS, uuid: IllusionBrowserFoldersPlugin.KksUuid, deps: [BepInExPlugin.KksUuid] }],
       lang: this.#lang,
       nodes: [this.#placer, resolver, mover],
     });
