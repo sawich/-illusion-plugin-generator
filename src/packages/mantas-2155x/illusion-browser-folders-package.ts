@@ -4,7 +4,7 @@ import { FileMover } from "@/core/package-builder/movers/file-mover";
 import { GitPlacer } from "@/core/package-builder/places/git-placer";
 import { VSProjectResolver, VSResolver } from "@/core/package-builder/resolvers/vs-resolver";
 import { Game } from "@/core/package-builder/types/game";
-import { IPackageBuilder } from "@/core/package-builder/types/package";
+import { IPackage, IPackageBuilder } from "@/core/package-builder/types/package";
 
 import { BepInExPlugin } from "../bep-in-ex/bep-in-ex-package";
 
@@ -33,6 +33,7 @@ class IllusionBrowserFoldersPlugin implements IPackageBuilder {
 
   constructor() {
     this.#builder = new PackageBuilder("1865abff-3d7e-44d9-9e25-8ee659439d0a");
+    this.#placer = new GitPlacer({ url: "https://github.com/ManlyMarco/Illusion_BrowserFolders" });
     this.#lang = this.#builder.lang({
       uuid: "fd363547-ea54-4db1-a08c-b13a1ae64542",
       name: "BrowserFolders",
@@ -51,8 +52,6 @@ class IllusionBrowserFoldersPlugin implements IPackageBuilder {
       ],
     });
 
-    const placer = new GitPlacer({ url: "https://github.com/ManlyMarco/Illusion_BrowserFolders" });
-
     const mover = new FileMover({
       files: [
         {
@@ -65,7 +64,7 @@ class IllusionBrowserFoldersPlugin implements IPackageBuilder {
     this.#builder.use({
       games: [{ id: Game.HS2, uuid: IllusionBrowserFoldersPlugin.Hs2Uuid, deps: [BepInExPlugin.Hs2Uuid] }],
       lang: this.#lang,
-      nodes: [placer, resolver, mover],
+      nodes: [this.#placer, resolver, mover],
     });
   }
 
@@ -80,8 +79,6 @@ class IllusionBrowserFoldersPlugin implements IPackageBuilder {
       ],
     });
 
-    const placer = new GitPlacer({ url: "https://github.com/ManlyMarco/Illusion_BrowserFolders" });
-
     const mover = new FileMover({
       files: [
         {
@@ -94,7 +91,7 @@ class IllusionBrowserFoldersPlugin implements IPackageBuilder {
     this.#builder.use({
       games: [{ id: Game.AI, uuid: IllusionBrowserFoldersPlugin.AiUuid, deps: [BepInExPlugin.AiUuid] }],
       lang: this.#lang,
-      nodes: [placer, resolver, mover],
+      nodes: [this.#placer, resolver, mover],
     });
   }
 
@@ -102,14 +99,11 @@ class IllusionBrowserFoldersPlugin implements IPackageBuilder {
     const resolver = new VSResolver({
       dir: "/src",
       build: [
-        new VSProjectResolver({
-          file: "src/KK_FolderBrowser/KK_BrowserFolders.csproj",
-          ignore: [],
-        }),
+        new VSProjectResolver({ file: "src/KK_FolderBrowser/KK_BrowserFolders.csproj", ignore: [] }),
+        new VSProjectResolver({ file: "src/KK_Hooks_KK/KK_BrowserFolders_Hooks_KK.csproj", ignore: [] }),
+        new VSProjectResolver({ file: "src/KK_Hooks_KKP/KK_BrowserFolders_Hooks_KKP.csproj", ignore: [] }),
       ],
     });
-
-    const placer = new GitPlacer({ url: "https://github.com/ManlyMarco/Illusion_BrowserFolders" });
 
     const mover = new FileMover({
       files: [
@@ -117,16 +111,25 @@ class IllusionBrowserFoldersPlugin implements IPackageBuilder {
           src: "bin/BepInEx/plugins/KK_BrowserFolders.dll",
           dst: "BepInEx/plugins/KK_BrowserFolders.dll",
         },
+        {
+          src: "bin/BepInEx/plugins/KK_BrowserFolders_Hooks_KK.dll",
+          dst: "BepInEx/plugins/KK_BrowserFolders_Hooks_KK.dll",
+        },
+        {
+          src: "bin/BepInEx/plugins/KK_BrowserFolders_Hooks_KKP.dll",
+          dst: "BepInEx/plugins/KK_BrowserFolders_Hooks_KKP.dll",
+        },
       ],
     });
 
     this.#builder.use({
       games: [{ id: Game.KK, uuid: IllusionBrowserFoldersPlugin.KkUuid, deps: [BepInExPlugin.KkUuid] }],
       lang: this.#lang,
-      nodes: [placer, resolver, mover],
+      nodes: [this.#placer, resolver, mover],
     });
   }
 
+  #placer: GitPlacer;
   #lang: Lang;
   #builder: PackageBuilder;
 }
