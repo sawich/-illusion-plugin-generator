@@ -63,7 +63,7 @@ export class CameraTargetPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/HS2_Fix_CameraTarget.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/HS2_Fix_CameraTarget.dll",
+          dst: "BepInEx/plugins/IllusionFixes/HS2_Fix_CameraTarget.dll",
         },
       ],
     });
@@ -90,7 +90,7 @@ export class CameraTargetPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_CameraTarget.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_CameraTarget.dll",
+          dst: "BepInEx/plugins/IllusionFixes/AI_Fix_CameraTarget.dll",
         },
       ],
     });
@@ -117,7 +117,7 @@ export class CameraTargetPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/PH_Fix_CameraTarget.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/PH_Fix_CameraTarget.dll",
+          dst: "BepInEx/plugins/IllusionFixes/PH_Fix_CameraTarget.dll",
         },
       ],
     });
@@ -144,7 +144,7 @@ export class CameraTargetPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_CameraTarget.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_CameraTarget.dll",
+          dst: "BepInEx/plugins/IllusionFixes/KK_Fix_CameraTarget.dll",
         },
       ],
     });
@@ -185,7 +185,7 @@ export class CardImportPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/CardImport.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/CardImport.dll",
+          dst: "BepInEx/plugins/IllusionFixes/CardImport.dll",
         },
       ],
     });
@@ -236,7 +236,7 @@ export class CharacterListOptimizationsPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_CharacterListOptimizations.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_CharacterListOptimizations.dll",
+          dst: "BepInEx/plugins/IllusionFixes/KK_Fix_CharacterListOptimizations.dll",
         },
       ],
     });
@@ -297,7 +297,7 @@ export class CenteredHSceneCursorPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_CenteredHSceneCursor.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_CenteredHSceneCursor.dll",
+          dst: "BepInEx/plugins/IllusionFixes/KK_Fix_CenteredHSceneCursor.dll",
         },
       ],
     });
@@ -338,7 +338,7 @@ export class DownloadRenamerPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_DownloadRenamer.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_DownloadRenamer.dll",
+          dst: "BepInEx/plugins/IllusionFixes/EC_Fix_DownloadRenamer.dll",
         },
       ],
     });
@@ -395,7 +395,7 @@ export class ExpandShaderDropdownPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_ExpandShaderDropdown.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_ExpandShaderDropdown.dll",
+          dst: "BepInEx/plugins/IllusionFixes/KK_Fix_ExpandShaderDropdown.dll",
         },
       ],
     });
@@ -422,7 +422,7 @@ export class ExpandShaderDropdownPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_ExpandShaderDropdown.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_ExpandShaderDropdown.dll",
+          dst: "BepInEx/plugins/IllusionFixes/EC_Fix_ExpandShaderDropdown.dll",
         },
       ],
     });
@@ -479,7 +479,7 @@ export class HeterochromiaFixPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_Heterochromia.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_Heterochromia.dll",
+          dst: "BepInEx/plugins/IllusionFixes/KK_Fix_Heterochromia.dll",
         },
       ],
     });
@@ -506,7 +506,7 @@ export class HeterochromiaFixPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_Heterochromia.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_Heterochromia.dll",
+          dst: "BepInEx/plugins/IllusionFixes/EC_Fix_Heterochromia.dll",
         },
       ],
     });
@@ -567,7 +567,7 @@ export class InvalidSceneFileProtectionPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_InvalidSceneFileProtection.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_InvalidSceneFileProtection.dll",
+          dst: "BepInEx/plugins/IllusionFixes/KK_Fix_InvalidSceneFileProtection.dll",
         },
       ],
     });
@@ -594,7 +594,7 @@ export class InvalidSceneFileProtectionPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/HS2_Fix_InvalidSceneFileProtection.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/HS2_Fix_InvalidSceneFileProtection.dll",
+          dst: "BepInEx/plugins/IllusionFixes/HS2_Fix_InvalidSceneFileProtection.dll",
         },
       ],
     });
@@ -621,7 +621,7 @@ export class InvalidSceneFileProtectionPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_InvalidSceneFileProtection.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_InvalidSceneFileProtection.dll",
+          dst: "BepInEx/plugins/IllusionFixes/AI_Fix_InvalidSceneFileProtection.dll",
         },
       ],
     });
@@ -678,7 +678,7 @@ export class InvalidSceneFileProtectionPlugin implements IPackage {
 //       files: [
 //         {
 //           src: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_LoadingFixes.dll",
-//           dst: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_LoadingFixes.dll",
+//           dst: "BepInEx/plugins/IllusionFixes/AI_Fix_LoadingFixes.dll",
 //         },
 //       ],
 //     });
@@ -707,7 +707,7 @@ export class InvalidSceneFileProtectionPlugin implements IPackage {
 //       files: [
 //         {
 //           src: "bin/BepInEx/plugins/IllusionFixes/HS2_Fix_LoadingFixes.dll",
-//           dst: "bin/BepInEx/plugins/IllusionFixes/HS2_Fix_LoadingFixes.dll",
+//           dst: "BepInEx/plugins/IllusionFixes/HS2_Fix_LoadingFixes.dll",
 //         },
 //       ],
 //     });
@@ -763,7 +763,7 @@ export class MainGameOptimizationsPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_MainGameOptimizations.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_MainGameOptimizations.dll",
+          dst: "BepInEx/plugins/IllusionFixes/KK_Fix_MainGameOptimizations.dll",
         },
       ],
     });
@@ -819,7 +819,7 @@ export class MakerOptimizationsPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_MakerOptimizations.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_MakerOptimizations.dll",
+          dst: "BepInEx/plugins/IllusionFixes/KK_Fix_MakerOptimizations.dll",
         },
       ],
     });
@@ -846,7 +846,7 @@ export class MakerOptimizationsPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_MakerOptimizations.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_MakerOptimizations.dll",
+          dst: "BepInEx/plugins/IllusionFixes/EC_Fix_MakerOptimizations.dll",
         },
       ],
     });
@@ -913,7 +913,7 @@ export class ManifestCorrectorPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_ManifestCorrector.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_ManifestCorrector.dll",
+          dst: "BepInEx/plugins/IllusionFixes/KK_Fix_ManifestCorrector.dll",
         },
       ],
     });
@@ -940,7 +940,7 @@ export class ManifestCorrectorPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_ManifestCorrector.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_ManifestCorrector.dll",
+          dst: "BepInEx/plugins/IllusionFixes/AI_Fix_ManifestCorrector.dll",
         },
       ],
     });
@@ -967,7 +967,7 @@ export class ManifestCorrectorPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/HS2_Fix_ManifestCorrector.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/HS2_Fix_ManifestCorrector.dll",
+          dst: "BepInEx/plugins/IllusionFixes/HS2_Fix_ManifestCorrector.dll",
         },
       ],
     });
@@ -994,7 +994,7 @@ export class ManifestCorrectorPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_ManifestCorrector.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_ManifestCorrector.dll",
+          dst: "BepInEx/plugins/IllusionFixes/EC_Fix_ManifestCorrector.dll",
         },
       ],
     });
@@ -1051,7 +1051,7 @@ export class ModdedHeadEyelinerPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_ModdedHeadEyeliner.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_ModdedHeadEyeliner.dll",
+          dst: "BepInEx/plugins/IllusionFixes/KK_Fix_ModdedHeadEyeliner.dll",
         },
       ],
     });
@@ -1078,7 +1078,7 @@ export class ModdedHeadEyelinerPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_ModdedHeadEyeliner.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_ModdedHeadEyeliner.dll",
+          dst: "BepInEx/plugins/IllusionFixes/EC_Fix_ModdedHeadEyeliner.dll",
         },
       ],
     });
@@ -1125,7 +1125,7 @@ export class NewGameShowAllCardsPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_NewGameShowAllCards.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_NewGameShowAllCards.dll",
+          dst: "BepInEx/plugins/IllusionFixes/AI_Fix_NewGameShowAllCards.dll",
         },
       ],
     });
@@ -1173,7 +1173,7 @@ export class NodeEditorUnlockPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_NodeUnlock.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_NodeUnlock.dll",
+          dst: "BepInEx/plugins/IllusionFixes/EC_Fix_NodeUnlock.dll",
         },
       ],
     });
@@ -1239,7 +1239,7 @@ export class NullChecksPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_NullChecks.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_NullChecks.dll",
+          dst: "BepInEx/plugins/IllusionFixes/KK_Fix_NullChecks.dll",
         },
       ],
     });
@@ -1266,7 +1266,7 @@ export class NullChecksPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_NullChecks.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_NullChecks.dll",
+          dst: "BepInEx/plugins/IllusionFixes/AI_Fix_NullChecks.dll",
         },
       ],
     });
@@ -1293,7 +1293,7 @@ export class NullChecksPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/HS2_Fix_NullChecks.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/HS2_Fix_NullChecks.dll",
+          dst: "BepInEx/plugins/IllusionFixes/HS2_Fix_NullChecks.dll",
         },
       ],
     });
@@ -1320,7 +1320,7 @@ export class NullChecksPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_NullChecks.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_NullChecks.dll",
+          dst: "BepInEx/plugins/IllusionFixes/EC_Fix_NullChecks.dll",
         },
       ],
     });
@@ -1376,7 +1376,7 @@ export class PartyCardCompatibilityPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_PartyCardCompatibility.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_PartyCardCompatibility.dll",
+          dst: "BepInEx/plugins/IllusionFixes/KK_Fix_PartyCardCompatibility.dll",
         },
       ],
     });
@@ -1403,7 +1403,7 @@ export class PartyCardCompatibilityPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_PartyCardCompatibility.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_PartyCardCompatibility.dll",
+          dst: "BepInEx/plugins/IllusionFixes/EC_Fix_PartyCardCompatibility.dll",
         },
       ],
     });
@@ -1454,7 +1454,7 @@ export class PersonalityCorrectorPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_PersonalityCorrector.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_PersonalityCorrector.dll",
+          dst: "BepInEx/plugins/IllusionFixes/KK_Fix_PersonalityCorrector.dll",
         },
       ],
     });
@@ -1516,7 +1516,7 @@ export class PoseLoadPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_PoseLoad.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_PoseLoad.dll",
+          dst: "BepInEx/plugins/IllusionFixes/KK_Fix_PoseLoad.dll",
         },
       ],
     });
@@ -1543,7 +1543,7 @@ export class PoseLoadPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_PoseLoad.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_PoseLoad.dll",
+          dst: "BepInEx/plugins/IllusionFixes/AI_Fix_PoseLoad.dll",
         },
       ],
     });
@@ -1570,7 +1570,7 @@ export class PoseLoadPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/HS2_Fix_PoseLoad.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/HS2_Fix_PoseLoad.dll",
+          dst: "BepInEx/plugins/IllusionFixes/HS2_Fix_PoseLoad.dll",
         },
       ],
     });
@@ -1646,7 +1646,7 @@ export class ResourceUnloadOptimizationsPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_ResourceUnloadOptimizations.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_ResourceUnloadOptimizations.dll",
+          dst: "BepInEx/plugins/IllusionFixes/KK_Fix_ResourceUnloadOptimizations.dll",
         },
       ],
     });
@@ -1673,7 +1673,7 @@ export class ResourceUnloadOptimizationsPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_ResourceUnloadOptimizations.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_ResourceUnloadOptimizations.dll",
+          dst: "BepInEx/plugins/IllusionFixes/AI_Fix_ResourceUnloadOptimizations.dll",
         },
       ],
     });
@@ -1700,7 +1700,7 @@ export class ResourceUnloadOptimizationsPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/HS_Fix_ResourceUnloadOptimizations.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/HS_Fix_ResourceUnloadOptimizations.dll",
+          dst: "BepInEx/plugins/IllusionFixes/HS_Fix_ResourceUnloadOptimizations.dll",
         },
       ],
     });
@@ -1727,7 +1727,7 @@ export class ResourceUnloadOptimizationsPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/HS2_Fix_ResourceUnloadOptimizations.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/HS2_Fix_ResourceUnloadOptimizations.dll",
+          dst: "BepInEx/plugins/IllusionFixes/HS2_Fix_ResourceUnloadOptimizations.dll",
         },
       ],
     });
@@ -1754,7 +1754,7 @@ export class ResourceUnloadOptimizationsPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/PH_Fix_ResourceUnloadOptimizations.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/PH_Fix_ResourceUnloadOptimizations.dll",
+          dst: "BepInEx/plugins/IllusionFixes/PH_Fix_ResourceUnloadOptimizations.dll",
         },
       ],
     });
@@ -1781,7 +1781,7 @@ export class ResourceUnloadOptimizationsPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_ResourceUnloadOptimizations.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_ResourceUnloadOptimizations.dll",
+          dst: "BepInEx/plugins/IllusionFixes/EC_Fix_ResourceUnloadOptimizations.dll",
         },
       ],
     });
@@ -1852,7 +1852,7 @@ export class SettingsVerifierPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_SettingsVerifier.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_SettingsVerifier.dll",
+          dst: "BepInEx/plugins/IllusionFixes/KK_Fix_SettingsVerifier.dll",
         },
       ],
     });
@@ -1879,7 +1879,7 @@ export class SettingsVerifierPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_SettingsVerifier.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/AI_Fix_SettingsVerifier.dll",
+          dst: "BepInEx/plugins/IllusionFixes/AI_Fix_SettingsVerifier.dll",
         },
       ],
     });
@@ -1906,7 +1906,7 @@ export class SettingsVerifierPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/HS2_Fix_SettingsVerifier.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/HS2_Fix_SettingsVerifier.dll",
+          dst: "BepInEx/plugins/IllusionFixes/HS2_Fix_SettingsVerifier.dll",
         },
       ],
     });
@@ -1933,7 +1933,7 @@ export class SettingsVerifierPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/PH_Fix_SettingsVerifier.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/PH_Fix_SettingsVerifier.dll",
+          dst: "BepInEx/plugins/IllusionFixes/PH_Fix_SettingsVerifier.dll",
         },
       ],
     });
@@ -1960,7 +1960,7 @@ export class SettingsVerifierPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_SettingsVerifier.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/EC_Fix_SettingsVerifier.dll",
+          dst: "BepInEx/plugins/IllusionFixes/EC_Fix_SettingsVerifier.dll",
         },
       ],
     });
@@ -2008,7 +2008,7 @@ export class ShowerAccessoriesPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_ShowerAccessories.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_ShowerAccessories.dll",
+          dst: "BepInEx/plugins/IllusionFixes/KK_Fix_ShowerAccessories.dll",
         },
       ],
     });
@@ -2056,7 +2056,7 @@ export class UnlimitedMapLightsPlugin implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_UnlimitedMapLights.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/KK_Fix_UnlimitedMapLights.dll",
+          dst: "BepInEx/plugins/IllusionFixes/KK_Fix_UnlimitedMapLights.dll",
         },
       ],
     });
@@ -2103,7 +2103,7 @@ export class SteamReleaseCompatibilityPath implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/AI_Patch_SteamReleaseCompatibility.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/AI_Patch_SteamReleaseCompatibility.dll",
+          dst: "BepInEx/plugins/IllusionFixes/AI_Patch_SteamReleaseCompatibility.dll",
         },
       ],
     });
@@ -2150,7 +2150,7 @@ export class LogDespammerPath implements IPackage {
       files: [
         {
           src: "bin/BepInEx/plugins/IllusionFixes/AI_Patch_LogDespammer.dll",
-          dst: "bin/BepInEx/plugins/IllusionFixes/AI_Patch_LogDespammer.dll",
+          dst: "BepInEx/plugins/IllusionFixes/AI_Patch_LogDespammer.dll",
         },
       ],
     });
@@ -2205,7 +2205,7 @@ export class CultureFixPath implements IPackage {
       files: [
         {
           src: "bin/BepInEx/patchers/CultureFix.dll",
-          dst: "bin/BepInEx/patchers/CultureFix.dll",
+          dst: "BepInEx/patchers/CultureFix.dll",
         },
       ],
     });
@@ -2256,7 +2256,7 @@ export class MagicCarrotPath implements IPackage {
       files: [
         {
           src: "bin/BepInEx/patchers/Patch_MagicCarrot.dll",
-          dst: "bin/BepInEx/patchers/Patch_MagicCarrot.dll",
+          dst: "BepInEx/patchers/Patch_MagicCarrot.dll",
         },
       ],
     });
